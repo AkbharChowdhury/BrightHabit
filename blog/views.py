@@ -1,5 +1,7 @@
 from django.shortcuts import render
 
+from blog.models import Post
+
 posts = [
     {
         'author': 'John Doe',
@@ -20,7 +22,7 @@ def index(request):
     context = {
         'posts': posts
     }
-    return render(request, 'blog/index.html', context)
+    return render(request, 'blog/index.html', {'posts': Post.objects.all()})
 
 
 def about(request):
