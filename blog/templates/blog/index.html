@@ -20,7 +20,9 @@
             <div class="col-md-6 p-4 ps-md-0">
                 <h5 class="mt-0 text-capitalize">{{ post.title }}</h5>
                 <small class="text-muted">{{ post.date_posted|naturaltime }}</small>
-                <p>{{ post.get_snippet }}</p>
+               {% autoescape off %}
+                  <p>{{ post.snippet }}</p>
+               {% endautoescape off %}
 
                 <p class="card-text">
 
