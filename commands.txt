@@ -2,6 +2,10 @@ install django
 pip install django
 pip install --upgrade pip
 
+install crispy forms
+pip install django-crispy-forms
+pip install crispy-bootstrap5
+
 create a django project
 django-admin startproject blog
 pip install --upgrade pip
