@@ -1,0 +1,43 @@
+install django
+pip install django
+pip install --upgrade pip
+
+create a django project
+django-admin startproject blog
+pip install --upgrade pip
+
+ck-editor
+pip install django-ckeditor
+Pillow
+pip install Pillow
+
+cd blog
+
+python manage.py runserver
+
+create an app
+python manage.py startapp users
+
+migration
+python manage.py makemigrations
+python manage.py migrate
+
+shell
+python manage.py dbshell
+shell commands
+.tables
+.header on
+.mode column pragma table_info('blog_articles_article_likes');
+
+python manage.py shell
+
+from articles.models import Article
+
+Article.objects.all()
+article = Article()
+article.title = 'test title'
+
+python manage.py createsuperuser
+
+admin
+test1234--

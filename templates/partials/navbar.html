@@ -1,0 +1,32 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg sticky-top text-capitalize" data-bs-theme="dark">
+      <div class="container">
+        <a class="navbar-brand" href="{% url 'blog_index' %}">
+          <img src="{% static 'blog/logo.png' %}" alt="BrightHabit Logo" width="40" height="30">
+          Bright <span class="text-warning">h</span>abit
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.view_name == 'blog_index' %}active{% endif %}" {% if request.resolver_match.view_name == 'blog_index' %}aria-current="page" {% endif %} href="{% url 'blog_index' %}">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link {% if request.resolver_match.view_name == 'blog_about' %}active{% endif %}" {% if request.resolver_match.view_name == 'blog_about' %}aria-current="page" {% endif %} href="{% url 'blog_about' %}">About</a>
+            </li>
+
+          </ul>
+        
+          <ul class="navbar-nav ml-auto mb-2 mb-lg-0 text-capitalize">
+            <li class="nav-item">
+              <a class="nav-link" href="#">Login</a>
+            </li>
+            <button class="btn btn-warning text-capitalize">register</button>
+          </ul>
+
+        </div>
+      </div>
+    </nav>
