@@ -19,10 +19,12 @@ from django.urls import path, include
 from django.conf.urls.static import static
 
 from django.conf.urls.static import settings
+from users import views as user_views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', include('blog.urls')),
+                  path('admin/', admin.site.urls),
+                  path('register/', user_views.register, name='register'),
+                  path('', include('blog.urls')),
 
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+              ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 # python manage.py startapp blog
