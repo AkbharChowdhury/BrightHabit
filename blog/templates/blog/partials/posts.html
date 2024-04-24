@@ -1,0 +1,29 @@
+{% load humanize %}
+{% for post in posts %}
+    <div class="row g-0  position-relative">
+        <div class="col-md-6 mb-md-0 p-md-4">
+            <img style="object-fit: cover"
+                 width="428"
+                 height="200"
+                 src="{{ post.image.url }}"
+                 class="w-100"
+                 alt="article image">
+        </div>
+        <div class="col-md-6 p-4 ps-md-0">
+            <h5 class="mt-0 text-capitalize">{{ post.title }}</h5>
+            <small class="text-muted">{{ post.date_posted|naturaltime }}</small>
+            {% autoescape off %}
+                <p>{{ post.snippet }}</p>
+            {% endautoescape off %}
+            <p class="card-text">
+                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAYAAABzenr0AAACMklEQVR4AWKAgnogfg/E/+mBoXb1wyzvh0vQHzcw0NnnmCEBYgwwBrBXBpCqBUEYlhQSRQmEKipEKIJUkVQghIhCEEUASEkRpSKgEhBJAYCgEgSIAKAqBCgCSv1Pi3XfPWdvtwPgfsCYM7P/2ZmZ/RPwJ4DtVCqVSKVSKJfLqFQqyOVyMJvNb5OKxWLI5XLBAsjB7XYbj8cDfCyXSxiNRt6EkUgE5/MZL/r9PmQyGfWp1WrodLofBZAPttst3nG5XBCLxTix3+l2u9Tf6/Uwn8+ZAsifcw9nc7/f4XQ6afxoNAIfBoOB+NfrNblViUTCL6BareJTNpsNidVoNGBRLBZJKZ7PJ7GtViu/gOPxCCF4vV4EAgEwINeu1+upHQwGOQJIEqHU63UUCgWwOBwOsNvt1E4mk1wB6XQaQplMJmRUWdxuN3g8HmpnMhmugGw2C6FMp1OyJxiQxnO73dR+ncUREA6HIZRms0kajcXpdILNZqN2IpHgClAoFLherxBCKBRCNBoFi9Vq9d+O8Pv9/FPQarXwIWRviEQiskNYNBoNqFQqOoYul4u9iHa7HT4hHo/T+Ne48WGxWF5+mlsqlbJXsclk+rWIUqlE41ijPB6Pqb/T6WCxWLx9jEi9ZrMZWOz3e9K0PLFE1Nfaa7Xar3lJM/76OXY4HMjn8xgMBhgOh6jVavD5fPg3Xl5evFWsrKws2CIWFpYh0SAZdcCoAwa+a9YwgA6YwAAFE+jdPYf1jAGYpV6YmNbPGAAAAABJRU5ErkJggg=="
+                     alt="article image"
+                     width="25"
+                     height="25"
+                     class="img-fluid rounded">
+                <span class="text-capitalize">Medium</span>
+                <a href="#" class="stretched-link"></a>
+            </div>
+        </div>
+        <hr>
+    {% endfor %}
