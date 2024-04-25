@@ -1,8 +1,29 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}register{% endblock %}
+{% block title %}profile{% endblock %}
 
 {% block content %}
-   <h1>welcome {{ user.username }}</h1>
+
+        <div class="card">
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <img src="{{ user.profile.image.url }}" class="img-fluid rounded-circle ratio ratio-1x1 overflow-hidden card-img-top" style="object-fit: cover" width="100" height="100"
+                             alt="{{ user.username }} profile">
+                    </div>
+                    <div class="col">
+                        <h2>{{ user.username }}</h2>
+                        <p> {{ user.email }}
+                        </p>
+                    </div>
+                    <div class="col">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
 {% endblock %}
