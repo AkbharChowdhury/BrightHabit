@@ -1,23 +1,9 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 
 from blog.models import Post
 
-
-# posts = [
-#     {
-#         'author': 'John Doe',
-#         'title': 'first post!',
-#         'content': 'Beautiful day!',
-#         'date_posted': 'August 2,2018',
-#     },
-#     {
-#         'author': 'Jane Doe',
-#         'title': 'second post!',
-#         'content': 'Beautiful day 2!',
-#         'date_posted': 'August 28,2018',
-#     },
-# ]
 
 class PostListView(ListView):
     model = Post
@@ -32,7 +18,7 @@ class PostDetailView(DetailView):
     template_name = 'blog/detail.html'
 
 
-class PostCreateView(CreateView):
+class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
     context_object_name = 'post'
     template_name = 'blog/create.html'
@@ -43,7 +29,19 @@ class PostCreateView(CreateView):
         return super().form_valid(form)
 
 
+class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+    model = Post
+    context_object_name = 'post'
+    template_name = 'blog/update.html'
+    fields = ['title', 'body', 'image']
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
 
 
 def about(request):
