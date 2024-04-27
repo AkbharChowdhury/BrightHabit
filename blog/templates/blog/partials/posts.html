@@ -6,7 +6,9 @@
                     style="object-fit: cover"
                     width="428"
                     height="200"
-                    src="{{ post.image.url }}"
+                    {% if  post.image %}
+                        src="{{ post.image.url }}"
+                    {% endif %}
                     class="w-100"
                     alt="article image">
         </div>
@@ -24,7 +26,7 @@
                         height="25"
                         class="img-fluid rounded">
                 <span class="text-capitalize">{{ post.author.username }}</span>
-                <a href="#" class="stretched-link"></a>
+                <a href="{%url 'blog_detail' post.id %}" class="stretched-link"></a>
         </div>
     </div>
     <hr>
