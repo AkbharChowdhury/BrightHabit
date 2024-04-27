@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class RegisterView(CreateView):
@@ -25,29 +26,16 @@ class RegisterView(CreateView):
         return render(request, 'users/register.html', {'form': form})
 
 
-# def register(request):
-#     form = UserRegisterForm(request.POST) if request.method == 'POST' else UserRegisterForm()
-#     if request.method == 'POST':
-#         if form.is_valid():
-#             form.save()
-#             username = form.cleaned_data.get('username')
-#             messages.success(request, f'Account created for {username}. you can now login')
-#             return redirect('login')
-#
-#     return render(request, 'users/register.html', {'form': form})
-
-
-@login_required
-def profile(request):
+class Profile(LoginRequiredMixin, CreateView):
     template_name = 'users/profile.html'
-    if not request.method == 'POST':
-        context = {
+
+    def get(self, request, *args, **kwargs):
+        return render(request, self.template_name, {
             'user_form': UserUpdateForm(instance=request.user),
             'profile_form': ProfileUpdateForm(instance=request.user.profile)
-        }
-        return render(request, template_name, context)
+        })
 
-    if request.method == 'POST':
+    def post(self, request, *args, **kwargs):
         context = {
             'user_form': UserUpdateForm(request.POST, instance=request.user),
             'profile_form': ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
@@ -56,7 +44,6 @@ def profile(request):
             context['user_form'].save()
             context['profile_form'].save()
             messages.success(request, f'Your profile has been updated!')
-            # return redirect(reverse_lazy('profile'))
             return redirect('profile')
 
-        # return render(request, template_name, context)
+
