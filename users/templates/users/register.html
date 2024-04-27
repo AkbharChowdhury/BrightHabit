@@ -7,7 +7,6 @@
 
     <form action="" method="post" novalidate>
         {% csrf_token %}
-
         <fieldset class="form-group">
             <legend class="border-bottom mb-4 text-capitalize"> join today</legend>
             {{ form|crispy }}
@@ -16,10 +15,10 @@
         <div class="form-group pb-3">
             <button type="submit" class="btn btn-outline-info text-capitalize">Sign up</button>
         </div>
-        <div class="border-top pt-3">
-            <small class="text-muted">
-                Already Have An Account <a href="{% url 'login' %}" class="ml-2">Sign in</a>
-            </small>
-        </div>
     </form>
+    <div class="border-top pt-3">
+        <small class="text-muted">
+            Already Have An Account <a href="{% url 'login' %}" class="ml-2">Sign in</a>
+        </small>
+    </div>
 {% endblock %}

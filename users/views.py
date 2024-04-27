@@ -1,13 +1,10 @@
-from django.http import HttpResponseRedirect
-from django.shortcuts import render, redirect
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from django.contrib.auth.models import User
-from django.urls import reverse_lazy
-from django.views.generic import View, CreateView
-
-from .forms import UserRegisterForm
 from django.contrib.auth.decorators import login_required
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
+from django.views.generic import CreateView
+
+from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 
 
 class RegisterView(CreateView):
@@ -28,7 +25,6 @@ class RegisterView(CreateView):
         return render(request, 'users/register.html', {'form': form})
 
 
-
 # def register(request):
 #     form = UserRegisterForm(request.POST) if request.method == 'POST' else UserRegisterForm()
 #     if request.method == 'POST':
@@ -43,4 +39,24 @@ class RegisterView(CreateView):
 
 @login_required
 def profile(request):
-    return render(request, 'users/profile.html')
+    template_name = 'users/profile.html'
+    if not request.method == 'POST':
+        context = {
+            'user_form': UserUpdateForm(instance=request.user),
+            'profile_form': ProfileUpdateForm(instance=request.user.profile)
+        }
+        return render(request, template_name, context)
+
+    if request.method == 'POST':
+        context = {
+            'user_form': UserUpdateForm(request.POST, instance=request.user),
+            'profile_form': ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        }
+        if context['user_form'].is_valid() and context['profile_form'].is_valid():
+            context['user_form'].save()
+            context['profile_form'].save()
+            messages.success(request, f'Your profile has been updated!')
+            # return redirect(reverse_lazy('profile'))
+            return redirect('profile')
+
+        # return render(request, template_name, context)
