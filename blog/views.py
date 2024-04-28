@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.messages.views import SuccessMessageMixin
 
 from blog.models import Post
 
@@ -10,6 +11,7 @@ class PostListView(ListView):
     template_name = 'blog/index.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
+    paginate_by = 2
 
 
 class PostDetailView(DetailView):
@@ -18,11 +20,12 @@ class PostDetailView(DetailView):
     template_name = 'blog/detail.html'
 
 
-class PostCreateView(LoginRequiredMixin, CreateView):
+class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Post
     context_object_name = 'post'
     template_name = 'blog/create.html'
     fields = ['title', 'body', 'image']
+    success_message = f'blog created'.title()
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -49,6 +52,7 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     context_object_name = 'post'
     template_name = 'blog/delete.html'
     success_url = '/'
+    success_message = f'blog deleted'.title()
 
     def test_func(self):
         post = self.get_object()
