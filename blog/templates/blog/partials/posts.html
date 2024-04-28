@@ -7,7 +7,7 @@
                     width="428"
                     height="200"
                     {% if  post.image %}
-                        src="{{ post.image.url }}"
+                    src="{{ post.image.url }}"
                     {% endif %}
                     class="w-100"
                     alt="article image">
@@ -25,8 +25,19 @@
                         width="25"
                         height="25"
                         class="img-fluid rounded">
-                <span class="text-capitalize">{{ post.author.username }}</span>
-                <a href="{%url 'blog_detail' post.id %}" class="stretched-link"></a>
+
+                <span class="text-capitalize">
+                    <a href="{% url 'blog_user_posts'  post.author.username %}" class="text-dark">{{ post.author.username }}</a>
+                </span>
+
+
+            <div>
+                <a href="{% url 'blog_detail' post.id %}" class="btn btn-primary">View</a>
+            </div>
+
+
+{#                            <a "{% url 'blog_detail' post.id %}" class="stretched-link"></a>#}
+
         </div>
     </div>
     <hr>
