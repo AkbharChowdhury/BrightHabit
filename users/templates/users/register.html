@@ -1,17 +1,28 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}register{% endblock %}
+{% block title %}Register{% endblock %}
 
 {% block content %}
-
-    <form action="" method="post" novalidate>
+    {#    link: https://simpleisbetterthancomplex.com/tutorial/2018/08/13/how-to-use-bootstrap-4-forms-with-django.html?utm_source=youtube&utm_medium=video_description&utm_campaign=django_auth_tutorial&utm_content=channels#}
+    {#https://stackoverflow.com/questions/8466851/making-first-name-last-name-a-required-attribute-rather-than-an-optional-one-in#:~:text=Just%20create%20a%20custom%20UserRegisterForm,CharField(...)%20.#}
+    <form method="post" novalidate>
         {% csrf_token %}
         <fieldset class="form-group">
-            <legend class="border-bottom mb-4 text-capitalize"> join today</legend>
-            {{ form|crispy }}
+            <legend class="border-bottom mb-4 text-capitalize">join today</legend>
         </fieldset>
-
+        <div class="row">
+            <div class="col-6">
+                {{ form.first_name|as_crispy_field }}
+            </div>
+            <div class="col-6">
+                {{ form.last_name|as_crispy_field }}
+            </div>
+        </div>
+        {{ form.username|as_crispy_field }}
+        {{ form.email|as_crispy_field }}
+        {{ form.password1|as_crispy_field }}
+        {{ form.password2|as_crispy_field }}
         <div class="form-group pb-3">
             <button type="submit" class="btn btn-outline-info text-capitalize">Sign up</button>
         </div>

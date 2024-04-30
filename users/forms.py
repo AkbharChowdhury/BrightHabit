@@ -5,8 +5,19 @@ from django.core.exceptions import ValidationError
 from .models import Profile
 
 
+# from crispy_forms.helper import FormHelper
+# from crispy_forms.layout import Layout, Submit, Field
+
+
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
+    first_name = forms.CharField(max_length=200)
+    last_name = forms.CharField(max_length=200)
+
+    def __init__(self, *args, **kwargs):
+        super(UserRegisterForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs.update({'autofocus': ''})
+        self.fields['first_name'].widget.attrs.update({'autofocus': 'autofocus'})
 
     class Meta:
         model = User
