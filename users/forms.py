@@ -8,6 +8,14 @@ from .models import Profile
 # from crispy_forms.helper import FormHelper
 # from crispy_forms.layout import Layout, Submit, Field
 
+class Autofocus:
+    def __init__(self, fields):
+        self.fields = fields
+
+    def change_focus(self, old, new):
+        self.fields[old].widget.attrs.update({'autofocus': ''})
+        self.fields[new].widget.attrs.update({'autofocus': 'autofocus'})
+
 
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
@@ -15,9 +23,8 @@ class UserRegisterForm(UserCreationForm):
     last_name = forms.CharField(max_length=200)
 
     def __init__(self, *args, **kwargs):
-        super(UserRegisterForm, self).__init__(*args, **kwargs)
-        self.fields['username'].widget.attrs.update({'autofocus': ''})
-        self.fields['first_name'].widget.attrs.update({'autofocus': 'autofocus'})
+        super().__init__(*args, **kwargs)
+        Autofocus(self.fields).change_focus(old='username', new='first_name')
 
     class Meta:
         model = User
