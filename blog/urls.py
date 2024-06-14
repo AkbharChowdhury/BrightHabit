@@ -1,5 +1,13 @@
 from django.urls import path
-from .views import PostDetailView, PostListView, about, PostCreateView, PostUpdateView, PostDeleteView, UserPostListView
+from .views import (
+    PostDetailView,
+    PostListView,
+    about,
+    PostCreateView,
+    PostUpdateView,
+    PostDeleteView,
+    UserPostListView
+)
 
 
 def name(title):

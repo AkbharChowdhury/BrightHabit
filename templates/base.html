@@ -33,20 +33,8 @@
             <div class="card mb-4">
                 <div class="card-header text-capitalize">search</div>
                 <div class="card-body">
-                    <form role="search">
-                        <div class="input-group">
-                            <input
-                                    class="form-control"
-                                    type="search"
-                                    placeholder="Enter search term..."
-                                    name="title"
-                                    value='{{ request.GET.title }}'
-                                    aria-label="Enter search term..."
-                                    aria-describedby="button-search"
-                            >
-                            <button class="btn btn-primary" id="button-search" type="submit">Go!</button>
-                        </div>
-                    </form>
+                    {% include 'blog/partials/search.html' %}
+
                 </div>
 
                 <div class="container pb-4 mt-2">

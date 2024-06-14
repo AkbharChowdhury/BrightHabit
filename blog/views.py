@@ -18,44 +18,29 @@ class PostListView(ListView):
     #     search functionality: https://medium.com/@j.yanming/simple-search-page-with-pagination-in-django-154ad259f4d7
 
     def get_queryset(self):
-
-        search = {
-            'title': self.request.GET.get('title')
-        }
-
-        if search['title']:
-            return self.search_filter(title=search['title'])
-
+        search = dict(title=self.request.GET.get('title'), author=self.request.GET.get('author'))
+        if any(search.values()): return self.search_filter(**search)
         return self.model.objects.all()
 
-    def search_filter(self, title=None, category=None):
-        title = title.strip()
+    def __full_text_search(self, title: str):
+        return Q(title__icontains=title) | Q(body__icontains=title)
+
+    def __author_search(self, author: str):
+        return Q(author=author)
+
+    def search_filter(self, title: str, author: str):
         article_filter = self.model.objects.filter
 
-        if title and category:
+        if title is not None and author is not None:
             return article_filter(
-
-                Q(category_id=category) &
-                Q(snippet__icontains=title)
+                self.__author_search(author) &
+                self.__full_text_search(title)
             )
 
-        if title:
-            return article_filter(
-                Q(title__icontains=title) |
-                Q(body__icontains=title)
-            )
-
-        if category:
-            return article_filter(
-                Q(category_id=category)
-            )
-
-        def get_context_data(self, *args, **kwargs):
-            context = super(self.__class__, self).get_context_data(*args, **kwargs)
-            # context['category_menu'] = Category.objects.all()
-            context['total_records'] = self.get_queryset().count
-            context['message'] = 'hello world'
-            return context
+        if title is not None:
+            return article_filter(self.__full_text_search(title))
+        if author is not None:
+            return self.__author_search(author)
 
 
 class UserPostListView(ListView):
@@ -67,7 +52,11 @@ class UserPostListView(ListView):
 
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
-        return Post.objects.filter(author=user).order_by('-date_posted')
+        return self.model.objects.filter(author=user).order_by('-date_posted')
+
+    # def get_context_data(self, *args, **kwargs):
+    #     context = super(self.__class__, self).get_context_data(*args, **kwargs)
+    #     context['author_name'] = 'hello'
 
 
 class PostDetailView(DetailView):

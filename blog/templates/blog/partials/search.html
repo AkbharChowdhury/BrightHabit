@@ -1,0 +1,16 @@
+<form role="search">
+    <input type="text" name="author" value="{{ request.GET.author }}">
+    <div class="input-group">
+        <input
+                autocomplete="false"
+                class="form-control"
+                type="search"
+                placeholder="Enter search term..."
+                name="title"
+                value='{{ request.GET.title }}'
+                aria-label="Enter search term..."
+                aria-describedby="button-search"
+        >
+        <button class="btn btn-primary" id="button-search" type="submit">Go!</button>
+    </div>
+</form>
