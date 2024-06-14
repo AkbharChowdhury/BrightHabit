@@ -25,10 +25,15 @@
                         width="25"
                         height="25"
                         class="img-fluid rounded">
+            <form>
 
                 <span class="text-capitalize">
-                    <a href="{% url 'blog_user_posts'  post.author.username %}" class="text-dark">{{ post.author.username }}</a>
+
+                    <a href="{% url 'blog_user_posts' post.author.username %}?title={{ request.GET.title }}"
+                       class="text-dark">{{ post.author.username }}
+                    </a>
                 </span>
+            </form>
 
 
             <div>
@@ -36,7 +41,7 @@
             </div>
 
 
-{#                            <a "{% url 'blog_detail' post.id %}" class="stretched-link"></a>#}
+            {#                            <a "{% url 'blog_detail' post.id %}" class="stretched-link"></a>#}
 
         </div>
     </div>

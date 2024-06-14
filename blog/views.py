@@ -20,7 +20,7 @@ class PostListView(ListView):
     def get_queryset(self):
 
         search = {
-            'title': self.request.GET.get('title'),
+            'title': self.request.GET.get('title')
         }
 
         if search['title']:
@@ -29,9 +29,10 @@ class PostListView(ListView):
         return self.model.objects.all()
 
     def search_filter(self, title=None, category=None):
+        title = title.strip()
         article_filter = self.model.objects.filter
 
-        if title and category is not None:
+        if title and category:
             return article_filter(
 
                 Q(category_id=category) &
@@ -53,6 +54,7 @@ class PostListView(ListView):
             context = super(self.__class__, self).get_context_data(*args, **kwargs)
             # context['category_menu'] = Category.objects.all()
             context['total_records'] = self.get_queryset().count
+            context['message'] = 'hello world'
             return context
 
 

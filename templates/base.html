@@ -33,13 +33,19 @@
             <div class="card mb-4">
                 <div class="card-header text-capitalize">search</div>
                 <div class="card-body">
-                    <!-- <h class="card-title">search</h> -->
                     <form role="search">
-                         <div class="input-group">
-                        <input autofocus class="form-control" type="search" placeholder="Enter search term..." name="title" value='{{ request.GET.title }}'
-                               aria-label="Enter search term..." aria-describedby="button-search"/>
-                        <button class="btn btn-primary" id="button-search" type="submit">Go!</button>
-                    </div>
+                        <div class="input-group">
+                            <input
+                                    class="form-control"
+                                    type="search"
+                                    placeholder="Enter search term..."
+                                    name="title"
+                                    value='{{ request.GET.title }}'
+                                    aria-label="Enter search term..."
+                                    aria-describedby="button-search"
+                            >
+                            <button class="btn btn-primary" id="button-search" type="submit">Go!</button>
+                        </div>
                     </form>
                 </div>
 
