@@ -1,5 +1,3 @@
-import dataclasses
-
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -7,25 +5,6 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.models import User
 from blog.models import Post
 from .search_posts import SearchPosts
-
-
-# from django.db.models import Q
-#
-# class SearchPosts:
-#
-#     def __init__(self, title: str, author: str):
-#         self.__title = title
-#         self.__author = author
-#
-#     def __str__(self):
-#         return f'Title: {self.__title}, Author: {self.__author}'
-#
-#     def full_text_search(self):
-#         title = self.__title
-#         return Q(title__icontains=title) | Q(body__icontains=title)
-#
-#     def author_search(self):
-#         return Q(author=self.__author)
 
 
 class PostListView(ListView):
