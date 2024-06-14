@@ -4,7 +4,6 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.models import User
 from blog.models import Post
-
 from django.db.models import Q
 
 
@@ -29,8 +28,6 @@ class PostListView(ListView):
     ordering = ['-date_posted']
     paginate_by = 5
 
-    #     search functionality: https://medium.com/@j.yanming/simple-search-page-with-pagination-in-django-154ad259f4d7
-
     def get_queryset(self):
         search = dict(title=self.request.GET.get('title'), author=self.request.GET.get('author'))
         if any(search.values()):
@@ -42,10 +39,7 @@ class PostListView(ListView):
         search = SearchPosts(title, author)
 
         if title is not None and author is not None:
-            return article_filter(
-                search.author_search() &
-                search.full_text_search()
-            )
+            return article_filter(search.author_search() & search.full_text_search())
 
         if title is not None:
             return article_filter(search.full_text_search())
@@ -64,10 +58,6 @@ class UserPostListView(ListView):
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return self.model.objects.filter(author=user).order_by('-date_posted')
-
-    # def get_context_data(self, *args, **kwargs):
-    #     context = super(self.__class__, self).get_context_data(*args, **kwargs)
-    #     context['author_name'] = 'hello'
 
 
 class PostDetailView(DetailView):
