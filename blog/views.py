@@ -8,7 +8,7 @@ from blog.models import Post
 from django.db.models import Q
 
 
-class SearchPost:
+class SearchPosts:
     def __init__(self, title: str, author: str):
         self.title = title
         self.author = author
@@ -39,7 +39,7 @@ class PostListView(ListView):
 
     def search_filter(self, title: str, author: str):
         article_filter = self.model.objects.filter
-        search = SearchPost(title, author)
+        search = SearchPosts(title, author)
 
         if title is not None and author is not None:
             return article_filter(
