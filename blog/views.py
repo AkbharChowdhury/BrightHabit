@@ -8,6 +8,20 @@ from blog.models import Post
 from django.db.models import Q
 
 
+class SearchPost:
+    def __init__(self, title: str, author: str):
+        self.title = title
+        self.author = author
+
+    def full_text_search(self):
+        title = self.title
+        return Q(title__icontains=title) | Q(body__icontains=title)
+
+    def author_search(self):
+        author = self.author
+        return Q(author=author)
+
+
 class PostListView(ListView):
     model = Post
     template_name = 'blog/index.html'
@@ -19,28 +33,25 @@ class PostListView(ListView):
 
     def get_queryset(self):
         search = dict(title=self.request.GET.get('title'), author=self.request.GET.get('author'))
-        if any(search.values()): return self.search_filter(**search)
+        if any(search.values()):
+            return self.search_filter(**search)
         return self.model.objects.all()
-
-    def __full_text_search(self, title: str):
-        return Q(title__icontains=title) | Q(body__icontains=title)
-
-    def __author_search(self, author: str):
-        return Q(author=author)
 
     def search_filter(self, title: str, author: str):
         article_filter = self.model.objects.filter
+        search = SearchPost(title, author)
 
         if title is not None and author is not None:
             return article_filter(
-                self.__author_search(author) &
-                self.__full_text_search(title)
+                search.author_search() &
+                search.full_text_search()
             )
 
         if title is not None:
-            return article_filter(self.__full_text_search(title))
+            return article_filter(search.full_text_search())
+
         if author is not None:
-            return self.__author_search(author)
+            return search.author_search()
 
 
 class UserPostListView(ListView):
