@@ -34,11 +34,13 @@
                 <div class="card-header text-capitalize">search</div>
                 <div class="card-body">
                     <!-- <h class="card-title">search</h> -->
-                    <div class="input-group">
-                        <input autofocus class="form-control" type="text" placeholder="Enter search term..."
+                    <form role="search">
+                         <div class="input-group">
+                        <input autofocus class="form-control" type="search" placeholder="Enter search term..." name="title" value='{{ request.GET.title }}'
                                aria-label="Enter search term..." aria-describedby="button-search"/>
-                        <button class="btn btn-primary" id="button-search" type="button">Go!</button>
+                        <button class="btn btn-primary" id="button-search" type="submit">Go!</button>
                     </div>
+                    </form>
                 </div>
 
                 <div class="container pb-4 mt-2">

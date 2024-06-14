@@ -10,6 +10,7 @@ create a django project
 django-admin startproject blog
 pip install --upgrade pip
 
+-- install libraries
 ck-editor
 pip install django-ckeditor
 Pillow

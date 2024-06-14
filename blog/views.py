@@ -5,6 +5,8 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.models import User
 from blog.models import Post
 
+from django.db.models import Q
+
 
 class PostListView(ListView):
     model = Post
@@ -12,6 +14,46 @@ class PostListView(ListView):
     context_object_name = 'posts'
     ordering = ['-date_posted']
     paginate_by = 5
+
+    #     search functionality: https://medium.com/@j.yanming/simple-search-page-with-pagination-in-django-154ad259f4d7
+
+    def get_queryset(self):
+
+        search = {
+            'title': self.request.GET.get('title'),
+        }
+
+        if search['title']:
+            return self.search_filter(title=search['title'])
+
+        return self.model.objects.all()
+
+    def search_filter(self, title=None, category=None):
+        article_filter = self.model.objects.filter
+
+        if title and category is not None:
+            return article_filter(
+
+                Q(category_id=category) &
+                Q(snippet__icontains=title)
+            )
+
+        if title:
+            return article_filter(
+                Q(title__icontains=title) |
+                Q(body__icontains=title)
+            )
+
+        if category:
+            return article_filter(
+                Q(category_id=category)
+            )
+
+        def get_context_data(self, *args, **kwargs):
+            context = super(self.__class__, self).get_context_data(*args, **kwargs)
+            # context['category_menu'] = Category.objects.all()
+            context['total_records'] = self.get_queryset().count
+            return context
 
 
 class UserPostListView(ListView):
