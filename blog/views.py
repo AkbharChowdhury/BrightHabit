@@ -1,24 +1,31 @@
+import dataclasses
+
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.contrib.auth.models import User
 from blog.models import Post
-from django.db.models import Q
+from .search_posts import SearchPosts
 
 
-class SearchPosts:
-    def __init__(self, title: str, author: str):
-        self.title = title
-        self.author = author
-
-    def full_text_search(self):
-        title = self.title
-        return Q(title__icontains=title) | Q(body__icontains=title)
-
-    def author_search(self):
-        author = self.author
-        return Q(author=author)
+# from django.db.models import Q
+#
+# class SearchPosts:
+#
+#     def __init__(self, title: str, author: str):
+#         self.__title = title
+#         self.__author = author
+#
+#     def __str__(self):
+#         return f'Title: {self.__title}, Author: {self.__author}'
+#
+#     def full_text_search(self):
+#         title = self.__title
+#         return Q(title__icontains=title) | Q(body__icontains=title)
+#
+#     def author_search(self):
+#         return Q(author=self.__author)
 
 
 class PostListView(ListView):
@@ -38,10 +45,10 @@ class PostListView(ListView):
         article_filter = self.model.objects.filter
         search = SearchPosts(title, author)
 
-        if title is not None and author is not None:
+        if title is not None and author:
             return article_filter(search.author_search() & search.full_text_search())
 
-        if title is not None:
+        if title:
             return article_filter(search.full_text_search())
 
         if author is not None:
