@@ -2,9 +2,9 @@ from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
-from django.contrib.auth.models import User
 from blog.models import Post
 from .search_posts import SearchPosts
+from .author import Author
 
 
 class PostListView(ListView):
@@ -15,6 +15,7 @@ class PostListView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
+
         search = dict(title=self.request.GET.get('title'), author=self.request.GET.get('author'))
         if any(search.values()):
             return self.search_filter(**search)
@@ -22,15 +23,15 @@ class PostListView(ListView):
 
     def search_filter(self, title: str, author: str):
         article_filter = self.model.objects.filter
-        search = SearchPosts(title, author)
+        author_id = str(Author.get_author(author).id) if author else None
+        search = SearchPosts(title=title, author_id=author_id)
 
-        if title is not None and author:
+        if title and author:
             return article_filter(search.author_search() & search.full_text_search())
-
         if title:
             return article_filter(search.full_text_search())
 
-        if author is not None:
+        if author:
             return search.author_search()
 
 
@@ -42,7 +43,7 @@ class UserPostListView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        user = Author.get_author(username=self.kwargs.get('username'))
         return self.model.objects.filter(author=user).order_by('-date_posted')
 
 

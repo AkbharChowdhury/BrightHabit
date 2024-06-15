@@ -29,7 +29,7 @@
 
                 <span class="text-capitalize">
 
-                    <a href="{% url 'blog_user_posts' post.author.username %}?title={{ request.GET.title }}"
+                    <a href="{% url 'blog_user_posts' post.author.username %}?title={{ request.GET.title }}&author={{ post.author.username }}"
                        class="text-dark">{{ post.author.username }}
                     </a>
                 </span>
