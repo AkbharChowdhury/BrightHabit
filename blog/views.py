@@ -5,7 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from blog.models import Post
 from .search_posts import SearchPosts
-qfrom .author import Author
+from .author import Author
 
 
 class PostListView(ListView):
@@ -37,14 +37,11 @@ class UserPostListView(ListView):
 
     def get_queryset(self):
         user = Author.get_author(username=self.kwargs.get('username'))
-        if self.request.GET.get('title') is not None:
-            title = self.request.GET.get('title')
+        title = self.request.GET.get('title')
+        if title is not None:
             return self.model.objects.filter(Q(author=user) & Q(title__icontains=title)).order_by('-date_posted')
-
         return self.model.objects.filter(author=user).order_by('-date_posted')
 
-
-# Q(author=self.__author_id)
 
 class PostDetailView(DetailView):
     model = Post
