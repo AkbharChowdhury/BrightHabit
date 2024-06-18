@@ -12,7 +12,7 @@ class Post(models.Model):
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True, upload_to='images/')
-    search_fields = ('title', 'body', 'author_id')
+    search_fields = ('title', 'body', 'author')
 
     def __str__(self):
         return self.title

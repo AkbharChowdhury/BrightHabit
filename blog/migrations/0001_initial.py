@@ -23,7 +23,7 @@ class Migration(migrations.Migration):
                 ('title', models.CharField(max_length=100)),
                 ('body', ckeditor.fields.RichTextField(blank=True, null=True)),
                 ('date_posted', models.DateTimeField(default=django.utils.timezone.now)),
-                ('author_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

@@ -5,8 +5,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from blog.models import Post
 from .search_posts import SearchPosts
-from .custom_search import CustomSearch
-from .author import Author
+qfrom .author import Author
 
 
 class PostListView(ListView):
@@ -14,7 +13,7 @@ class PostListView(ListView):
     template_name = 'blog/index.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
-    paginate_by = CustomSearch.records_per_page()
+    paginate_by = SearchPosts.records_per_page()
 
     # def get_context_data(self, **kwargs):
     #     data = super().get_context_data(**kwargs)
@@ -22,23 +21,11 @@ class PostListView(ListView):
     #     return data
 
     def get_queryset(self):
-
         search = dict(title=self.request.GET.get('title'), author=self.request.GET.get('author'))
         if any(search.values()):
-            return self.search_filter(**search)
+            search = SearchPosts(**search)
+            return search.search()
         return self.model.objects.all()
-
-    def search_filter(self, title: str, author: str):
-        article_filter = self.model.objects.filter
-        author_id = str(Author.get_author(author).id) if author else None
-        search = SearchPosts(title=title, author_id=author_id)
-
-        if title and author:
-            return article_filter(search.full_text_search() & search.author_search())
-        if author:
-            return search.author_search()
-        if title:
-            return article_filter(search.full_text_search())
 
 
 class UserPostListView(ListView):
@@ -46,7 +33,7 @@ class UserPostListView(ListView):
     template_name = 'blog/user_posts.html'
     context_object_name = 'posts'
     # ordering = ['-date_posted']
-    paginate_by = CustomSearch.records_per_page()
+    paginate_by = SearchPosts.records_per_page()
 
     def get_queryset(self):
         user = Author.get_author(username=self.kwargs.get('username'))
