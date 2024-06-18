@@ -1,11 +1,12 @@
-from django.db.models import Q
-from django.shortcuts import render, get_object_or_404
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.db.models import Q
+from django.shortcuts import render
+from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+
 from blog.models import Post
-from .search_posts import SearchPosts
 from .author import Author
+from .search_posts import SearchPosts
 
 
 class PostListView(ListView):
