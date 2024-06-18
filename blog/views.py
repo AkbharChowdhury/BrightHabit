@@ -24,8 +24,7 @@ class PostListView(ListView):
     def get_queryset(self):
         search = dict(title=self.request.GET.get('title'), author=self.request.GET.get('author'))
         if any(search.values()):
-            search = SearchPosts(**search)
-            return search.search().order_by('-date_posted')
+            return SearchPosts(**search).search().order_by('-date_posted')
         return self.model.objects.all().order_by('-date_posted')
 
 
@@ -33,12 +32,12 @@ class UserPostListView(ListView):
     model = Post
     template_name = 'blog/user_posts.html'
     context_object_name = 'posts'
-    # ordering = ['-date_posted']
     paginate_by = SearchPosts.records_per_page()
 
     def get_queryset(self):
         user = Author.get_author(username=self.kwargs.get('username'))
         title = self.request.GET.get('title')
+
         if title:
             return self.model.objects.filter(Q(author=user) & Q(title__icontains=title)).order_by('-date_posted')
         return self.model.objects.filter(author=user).order_by('-date_posted')
