@@ -1,9 +1,11 @@
+from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from blog.models import Post
 from .search_posts import SearchPosts
+from .custom_search import CustomSearch
 from .author import Author
 
 
@@ -12,7 +14,12 @@ class PostListView(ListView):
     template_name = 'blog/index.html'
     context_object_name = 'posts'
     ordering = ['-date_posted']
-    paginate_by = 5
+    paginate_by = CustomSearch.records_per_page()
+
+    # def get_context_data(self, **kwargs):
+    #     data = super().get_context_data(**kwargs)
+    #     data['page_title'] = 'Authors'
+    #     return data
 
     def get_queryset(self):
 
@@ -27,12 +34,11 @@ class PostListView(ListView):
         search = SearchPosts(title=title, author_id=author_id)
 
         if title and author:
-            return article_filter(search.author_search() & search.full_text_search())
-        if title:
-            return article_filter(search.full_text_search())
-
+            return article_filter(search.full_text_search() & search.author_search())
         if author:
             return search.author_search()
+        if title:
+            return article_filter(search.full_text_search())
 
 
 class UserPostListView(ListView):
@@ -40,12 +46,18 @@ class UserPostListView(ListView):
     template_name = 'blog/user_posts.html'
     context_object_name = 'posts'
     # ordering = ['-date_posted']
-    paginate_by = 5
+    paginate_by = CustomSearch.records_per_page()
 
     def get_queryset(self):
         user = Author.get_author(username=self.kwargs.get('username'))
+        if self.request.GET.get('title') is not None:
+            title = self.request.GET.get('title')
+            return self.model.objects.filter(Q(author=user) & Q(title__icontains=title)).order_by('-date_posted')
+
         return self.model.objects.filter(author=user).order_by('-date_posted')
 
+
+# Q(author=self.__author_id)
 
 class PostDetailView(DetailView):
     model = Post

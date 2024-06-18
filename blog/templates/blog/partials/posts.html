@@ -25,11 +25,11 @@
                         width="25"
                         height="25"
                         class="img-fluid rounded">
-            <form>
+            <form role="search">
 
                 <span class="text-capitalize">
-
-                    <a href="{% url 'blog_user_posts' post.author.username %}?title={{ request.GET.title }}&author={{ post.author.username }}"
+{##}
+                    <a type="submit" href="{% url 'blog_user_posts' post.author.username %}?title={{ request.GET.title }}&author={{ post.author.username }}"
                        class="text-dark">{{ post.author.username }}
                     </a>
                 </span>
