@@ -2,15 +2,17 @@
 {% for post in posts %}
     <div class="row g-0  position-relative">
         <div class="col-md-6 mb-md-0 p-md-4">
-            <img
-                    style="object-fit: cover"
-                    width="428"
-                    height="200"
-                    {% if  post.image %}
-                    src="{{ post.image.url }}"
-                    {% endif %}
-                    class="w-100"
-                    alt="article image">
+            {% if  post.image %}
+                <img
+                        style="object-fit: cover"
+                        width="428"
+                        height="200"
+                        {% if  post.image %}
+                        src="{{ post.image.url }}"
+                        {% endif %}
+                        class="w-100"
+                        alt="article image">
+            {% endif %}
         </div>
         <div class="col-md-6 p-4 ps-md-0">
             <h5 class="mt-0 text-capitalize">{{ post.title }}</h5>
@@ -28,8 +30,8 @@
             <form role="search">
 
                 <span class="text-capitalize">
-{##}
-                    <a type="submit" href="{% url 'blog_user_posts' post.author.username %}?title={{ request.GET.title }}&author={{ post.author.username }}"
+                    <a type="submit"
+                       href="{% url 'blog_user_posts' post.author.username %}?title={{ request.GET.title }}&author={{ post.author.username }}"
                        class="text-dark">{{ post.author.username }}
                     </a>
                 </span>

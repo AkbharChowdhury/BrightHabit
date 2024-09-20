@@ -26,16 +26,18 @@
             <a class="badge bg-secondary text-decoration-none link-light" href="#!">Freebies</a>
         </header>
         <!-- Preview image figure-->
-        <figure class="mb-4">
-            <div class="ratio ratio-4x3">
-                <img class="img-fluid rounded"
-                        {% if  post.image %}
-                     src="{{ post.image.url }}"
-                        {% endif %}
-                     alt="article image"/>
-            </div>
+        {% if  post.image %}
+            <figure class="mb-4">
+                <div class="ratio ratio-4x3">
+                    <img class="img-fluid rounded"
+                            {% if  post.image %}
+                         src="{{ post.image.url }}"
+                            {% endif %}
+                         alt="article image"/>
+                </div>
 
-        </figure>
+            </figure>
+        {% endif %}
         <!-- Post content-->
         <section class="mb-5">
             <p class="fs-5 mb-4">{{ post.get_content }}</p>
