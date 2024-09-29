@@ -29,8 +29,8 @@ class SearchPosts:
 
     def search(self):
         qs = self.model.objects.filter(self.__full_text_search() | self.__author_search())
-        # if self.__tags is not None:
-        # qs = qs.filter(tags__name__in=self.__tags)
+        if self.__tags:
+            qs = qs.filter(tags__name__in=self.__tags)
         return qs
 
     # def search1(self):
