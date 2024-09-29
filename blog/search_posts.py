@@ -25,12 +25,19 @@ class SearchPosts:
         return Q(author=self.__author_id)
 
     def search(self):
+
+
+        # return self.model.objects.filter(tags__contains='coding')
+        # print(self.model.objects.filter(title__contains='Coding'))
+
+        # return self.model.objects.filter(Q(title__icontains='coding'))
         title = self.__title
         author = self.__author_id
         article_filter = self.model.objects.filter
         author_id = str(Author.get_author(author).id) if author else None
         search = SearchPosts(title=title, author=author_id)
 
+        # tags = self.model.objects.filter(tags__name__contains='coding')
         if title and author:
             return article_filter(search.full_text_search() & search.author_search())
         if author:

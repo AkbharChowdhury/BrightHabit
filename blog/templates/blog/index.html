@@ -8,12 +8,15 @@
     {% include 'blog/partials/pagination.html' %}
 
 
-
+    {#post.tags.all#}
 
     {% for post in posts %}
         {% for tag in post.tags.all %}
             <span class="badge text-bg-secondary">{{ tag }}</span>
         {% endfor %}
     {% endfor %}
+
+
+
 
 {% endblock %}
