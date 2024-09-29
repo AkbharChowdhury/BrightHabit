@@ -1,6 +1,6 @@
 {% for post in posts %}
     {% for tag in post.tags.all %}
-            <input type="checkbox" class="btn-check" id="{{ tag }}" name="tags[]" value="{{ tag }}">
+            <input type="checkbox" class="btn-check" id="{{ tag }}" name="tags" value="{{ tag }}">
             <label class="btn btn-outline-primary" for="{{ tag }}">{{ tag }}</label>
     {% endfor %}
 {% endfor %}

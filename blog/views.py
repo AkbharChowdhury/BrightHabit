@@ -20,7 +20,7 @@ class PostListView(ListView):
         search = dict(
             title=self.request.GET.get('title'),
             author=self.request.GET.get('author'),
-            tags=self.request.GET.get('tags'),
+            tags=self.request.GET.getlist('tags', []),
         )
         print(search)
 

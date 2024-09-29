@@ -28,11 +28,10 @@ class SearchPosts:
         return Q(tags__name__in=self.__tags)
 
     def search(self):
-        return self.model.objects.filter(
-            self.__full_text_search() |
-            self.__author_search() |
-            self.__tags_search()
-        )
+        qs = self.model.objects.filter(self.__full_text_search() | self.__author_search())
+        # if self.__tags is not None:
+        # qs = qs.filter(tags__name__in=self.__tags)
+        return qs
 
     # def search1(self):
     #     # return self.model.objects.filter(tags__contains='coding')
