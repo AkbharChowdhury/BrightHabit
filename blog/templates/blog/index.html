@@ -6,4 +6,14 @@
 {% block content %}
     {% include 'blog/partials/posts.html' with posts=posts only %}
     {% include 'blog/partials/pagination.html' %}
+
+
+
+
+    {% for post in posts %}
+        {% for tag in post.tags.all %}
+            <span class="badge text-bg-secondary">{{ tag }}</span>
+        {% endfor %}
+    {% endfor %}
+
 {% endblock %}
