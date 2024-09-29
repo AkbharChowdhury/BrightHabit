@@ -1,18 +1,37 @@
 <form role="search">
+    <div class="card-body">
+        <div class="input-group">
+            <input
+                    autocomplete="false"
+                    class="form-control"
+                    type="search"
+                    placeholder="Enter search term..."
+                    name="title"
+                    value='{{ request.GET.title }}'
+                    aria-label="Enter search term..."
+                    aria-describedby="button-search"
+            >
+            <button class="btn btn-primary" type="submit">Go!</button>
 
-    <div class="input-group">
-        <input
-                autocomplete="false"
-                class="form-control"
-                type="search"
-                placeholder="Enter search term..."
-                name="title"
-                value='{{ request.GET.title }}'
-                aria-label="Enter search term..."
-                aria-describedby="button-search"
-        >
-        <button class="btn btn-primary" type="submit">Go!</button>
 
+            {#        {% for post in posts %}#}
+            {#    {% for tag in post.tags.all %}#}
+            {#            <input type="checkbox" class="btn-check" id="{{ tag }}" name="tags[]" value="{{ tag }}">#}
+            {#            <label class="btn btn-outline-dark" for="{{ tag }}">{{ tag }}</label>#}
+            {#    {% endfor %}#}
+            {#{% endfor %}#}
 
+        </div>
     </div>
+
+                    <div class="container pb-4 mt-2">
+{#                                        <button type="button" class="btn btn-outline-primary text-capitalize active">lifestyle</button>#}
+{#                                        <button type="button" class="btn btn-outline-primary text-capitalize">coding</button>#}
+{#                                        <button type="button" class="btn btn-outline-primary text-capitalize">politics</button>#}
+
+                    {% include 'partials/tags.html' %}
+
+
+                </div>
+
 </form>
