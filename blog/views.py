@@ -17,10 +17,32 @@ class PostListView(ListView):
     paginate_by = SearchPosts.records_per_page()
 
     def get_queryset(self):
-        search = dict(title=self.request.GET.get('title'), author=self.request.GET.get('author'))
+        search = dict(
+            title=self.request.GET.get('title'),
+            author=self.request.GET.get('author'),
+            tags=self.request.GET.get('tags'),
+        )
+        print(self.request.GET)
+        print(search)
         if any(search.values()):
             return SearchPosts(**search).search().order_by(self.ordering)
         return self.model.objects.all().order_by(self.ordering)
+
+
+class TagListView(ListView):
+    model = Post
+    template_name = 'partials/tags.html'
+    context_object_name = 'posts'
+
+    def get_queryset(self):
+        a = self.model.objects.order_by('title').values_list('name', flat=True).distinct('name')
+
+        return a
+
+    # def get_context_data(self, **kwargs):
+    #     data = super().get_context_data(**kwargs)
+    #     data['page_title'] = 'hello world'.title()
+    #     return data
 
 
 class UserPostListView(ListView):

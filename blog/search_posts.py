@@ -9,13 +9,14 @@ class SearchPosts:
     def records_per_page():
         return 5
 
-    def __init__(self, title: str, author: str):
+    def __init__(self, title: str, author: str, tags: list[str]):
         self.model = Post
         self.__title = title
         self.__author_id = author
+        self.__tags = tags
 
     def __str__(self):
-        return f'Title: {self.__title}, Author: {self.__author_id}'
+        return f'Title: {self.__title}, Author: {self.__author_id}, Tags: {self.__tags}'
 
     def full_text_search(self):
         title = self.__title
@@ -26,7 +27,6 @@ class SearchPosts:
 
     def search(self):
 
-
         # return self.model.objects.filter(tags__contains='coding')
         # print(self.model.objects.filter(title__contains='Coding'))
 
@@ -35,7 +35,7 @@ class SearchPosts:
         author = self.__author_id
         article_filter = self.model.objects.filter
         author_id = str(Author.get_author(author).id) if author else None
-        search = SearchPosts(title=title, author=author_id)
+        search = SearchPosts(title=title, author=author_id, tags=self.__tags)
 
         # tags = self.model.objects.filter(tags__name__contains='coding')
         if title and author:

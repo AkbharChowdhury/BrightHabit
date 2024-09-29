@@ -32,6 +32,7 @@
             <!-- Search widget-->
             <div class="card mb-4">
                 <div class="card-header text-capitalize">search</div>
+                
                 <div class="card-body">
                     {% include 'blog/partials/search.html' %}
 
@@ -41,10 +42,8 @@
                     {#                    <button type="button" class="btn btn-outline-primary text-capitalize active">lifestyle</button>#}
                     {#                    <button type="button" class="btn btn-outline-primary text-capitalize">coding</button>#}
                     {#                    <button type="button" class="btn btn-outline-primary text-capitalize">politics</button>#}
-                    <input type="checkbox" class="btn-check" id="tag_coding" autocomplete="off">
-                    <label class="btn btn-outline-primary text-capitalize" for="tag_coding">coding</label><br>
-                    <input type="checkbox" class="btn-check" id="tag_health_and_fitness" autocomplete="off">
-                    <label class="btn btn-outline-primary text-capitalize" for="tag_health_and_fitness">Health & Fitness</label><br>
+
+                    {% include 'partials/tags.html' %}
 
 
                 </div>
