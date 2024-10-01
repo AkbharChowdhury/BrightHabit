@@ -30,8 +30,6 @@ class PostListView(ListView, CustomTags):
             author=self.request.GET.get('author'),
             tags=self.request.GET.getlist('tags', []),
         )
-        print(search['tags'])
-
         if any(search.values()):
             return SearchPosts(**search).search().order_by(self.ordering)
         return self.model.objects.all().order_by(self.ordering)
