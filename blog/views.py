@@ -4,7 +4,7 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from blog.models import Post
+from blog.models import Post, Tag
 from .author import Author
 from .search_posts import SearchPosts
 
@@ -28,21 +28,20 @@ class PostListView(ListView):
             return SearchPosts(**search).search().order_by(self.ordering)
         return self.model.objects.all().order_by(self.ordering)
 
+    def get_context_data(self, **kwargs):
+        # Call the base implementation first to get a context
+        context = super().get_context_data(**kwargs)
+        # Add in a QuerySet of all the books
+        context["tags"] = Tag.objects.all()
+        context["text"] = 'hello'
+
+        return context
+
 
 class TagListView(ListView):
-    model = Post
+    model = Tag
     template_name = 'partials/tags.html'
-    context_object_name = 'posts'
-
-    def get_queryset(self):
-        a = self.model.objects.order_by('title').values_list('name', flat=True).distinct('name')
-
-        return a
-
-    # def get_context_data(self, **kwargs):
-    #     data = super().get_context_data(**kwargs)
-    #     data['page_title'] = 'hello world'.title()
-    #     return data
+    context_object_name = 'tags'
 
 
 class UserPostListView(ListView):

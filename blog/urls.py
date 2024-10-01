@@ -6,12 +6,14 @@ from .views import (
     PostCreateView,
     PostUpdateView,
     PostDeleteView,
-    UserPostListView
+    UserPostListView,
+    TagListView,
 )
 
 
 def name(title):
     return f'blog_{title}'
+
 
 urlpatterns = [
     path('', PostListView.as_view(), name=name('index')),
@@ -21,5 +23,6 @@ urlpatterns = [
     path('post/<int:pk>/update', PostUpdateView.as_view(), name=name('update')),
     path('post/<int:pk>/delete', PostDeleteView.as_view(), name=name('delete')),
     path('about/', about, name=name('about')),
+    path('a/', TagListView.as_view(), name=name('index1')),
 
 ]

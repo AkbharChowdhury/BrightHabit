@@ -32,19 +32,46 @@
             <!-- Search widget-->
             <div class="card mb-4">
                 <div class="card-header text-capitalize">search</div>
-                 {% include 'blog/partials/search.html' %}
-                
-                
-               
-{#                <div class="container pb-4 mt-2">#}
-                    {#                    <button type="button" class="btn btn-outline-primary text-capitalize active">lifestyle</button>#}
-                    {#                    <button type="button" class="btn btn-outline-primary text-capitalize">coding</button>#}
-                    {#                    <button type="button" class="btn btn-outline-primary text-capitalize">politics</button>#}
-{##}
-{#                    {% include 'partials/tags.html' %}#}
-{##}
-{##}
-{#                </div>#}
+{#                {% include 'blog/partials/search.html' %}#}
+
+                <form role="search">
+    <div class="card-body">
+        <div class="input-group">
+            <input
+                    autocomplete="false"
+                    class="form-control"
+                    type="search"
+                    placeholder="Enter search term..."
+                    name="title"
+                    value='{{ request.GET.title }}'
+                    aria-label="Enter search term..."
+                    aria-describedby="button-search">
+            <button class="btn btn-primary" type="submit">Go!</button>
+        </div>
+    </div>
+
+    <div class="container pb-4 mt-2">
+
+        {% block tags %}
+        {% endblock %}
+
+    </div>
+
+</form>
+
+
+
+
+
+                {#                <div class="container pb-4 mt-2">#}
+                {#                    <button type="button" class="btn btn-outline-primary text-capitalize active">lifestyle</button>#}
+                {#                    <button type="button" class="btn btn-outline-primary text-capitalize">coding</button>#}
+                {#                    <button type="button" class="btn btn-outline-primary text-capitalize">politics</button>#}
+                {##}
+                {#                    {% include 'partials/tags.html' %}#}
+                {##}
+                {##}
+                {#                </div>#}
 
             </div>
 
