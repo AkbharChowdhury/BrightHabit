@@ -22,19 +22,15 @@ class PostListView(ListView):
             author=self.request.GET.get('author'),
             tags=self.request.GET.getlist('tags', []),
         )
-        print(search)
+        print(search['tags'])
 
         if any(search.values()):
             return SearchPosts(**search).search().order_by(self.ordering)
         return self.model.objects.all().order_by(self.ordering)
 
     def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
         context = super().get_context_data(**kwargs)
-        # Add in a QuerySet of all the books
         context["tags"] = Tag.objects.all()
-        context["text"] = 'hello'
-
         return context
 
 

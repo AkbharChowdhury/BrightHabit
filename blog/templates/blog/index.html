@@ -6,10 +6,10 @@
 {% endblock %}
 
 {% block tags %}
-    {% include 'partials/tags.html' with tags=tags only %}
-
+    {% include 'partials/tags.html' with tags=tags selected_tags=request.GET.tags %}
 {% endblock %}
 {% block content %}
+
     {% include 'blog/partials/posts.html' with posts=posts only %}
     {% include 'blog/partials/pagination.html' %}
 {% endblock %}
