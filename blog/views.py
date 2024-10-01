@@ -3,13 +3,21 @@ from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.views.generic.base import ContextMixin
 
 from blog.models import Post, Tag
 from .author import Author
 from .search_posts import SearchPosts
 
 
-class PostListView(ListView):
+class CustomTags(ContextMixin):
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tags'] = Tag.objects.all()
+        return context
+
+
+class PostListView(ListView, CustomTags):
     model = Post
     template_name = 'blog/index.html'
     context_object_name = 'posts'
@@ -28,19 +36,8 @@ class PostListView(ListView):
             return SearchPosts(**search).search().order_by(self.ordering)
         return self.model.objects.all().order_by(self.ordering)
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context["tags"] = Tag.objects.all()
-        return context
 
-
-class TagListView(ListView):
-    model = Tag
-    template_name = 'partials/tags.html'
-    context_object_name = 'tags'
-
-
-class UserPostListView(ListView):
+class UserPostListView(ListView, CustomTags):
     model = Post
     template_name = 'blog/user_posts.html'
     context_object_name = 'posts'
