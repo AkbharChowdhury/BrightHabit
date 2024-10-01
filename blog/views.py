@@ -45,6 +45,7 @@ class UserPostListView(ListView, CustomTags):
     def get_queryset(self):
         user = Author.get_author(username=self.kwargs.get('username'))
         title = self.request.GET.get('title')
+        tags = self.request.GET.getlist('tags', []),
         results = Q(author=user) & Q(title__icontains=title) if title else Q(author=user)
         return self.model.objects.filter(results).order_by(self.ordering)
 
