@@ -7,6 +7,7 @@ from django.views.generic.base import ContextMixin
 
 from blog.models import Post, Tag
 from .author import Author
+from .my_helper import MyHelper
 from .search_posts import SearchPosts
 
 
@@ -28,7 +29,7 @@ class PostListView(ListView, CustomTags):
         search = dict(
             title=self.request.GET.get('title'),
             author=self.request.GET.get('author'),
-            tags=self.request.GET.getlist('tags', []),
+            tags=self.request.GET.getlist('tags'),
         )
         if any(search.values()):
             return SearchPosts(**search).search().order_by(self.ordering)
@@ -43,9 +44,11 @@ class UserPostListView(ListView, CustomTags):
     ordering = '-date_posted'
 
     def get_queryset(self):
-        user = Author.get_author(username=self.kwargs.get('username'))
+        user = Author.get_author_by_username(username=self.kwargs.get('username'))
         title = self.request.GET.get('title')
-        tags = self.request.GET.getlist('tags', []),
+        tags = self.request.GET.getlist('tags')
+        if tags and MyHelper.list_is_not_empty(tags):
+            return self.model.objects.filter(Q(tags__name__in=tags) & Q(author=user)).order_by(self.ordering)
         results = Q(author=user) & Q(title__icontains=title) if title else Q(author=user)
         return self.model.objects.filter(results).order_by(self.ordering)
 
