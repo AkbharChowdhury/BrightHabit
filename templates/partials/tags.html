@@ -1,5 +1,9 @@
 {% for tag in tags %}
-    <input type="checkbox" class="btn-check" id="{{ tag }}" name="tags" value="{{ tag }}"
+    <input type="checkbox"
+           class="btn-check"
+           id="{{ tag }}"
+           name="tags"
+           value="{{ tag }}"
             {% if selected_tags == tag.name %} checked {% endif %}
     >
     <label class="btn btn-outline-primary" for="{{ tag }}">{{ tag }}</label>
