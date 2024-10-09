@@ -44,12 +44,16 @@ class UserPostListView(ListView, CustomTags):
     ordering = '-date_posted'
 
     def get_queryset(self):
-        user = Author.get_author_by_username(username=self.kwargs.get('username'))
         title = self.request.GET.get('title')
         tags = self.request.GET.getlist('tags')
+        author = Q(author=Author.get_author_by_username(username=self.kwargs.get('username')))
         if tags and MyHelper.list_is_not_empty(tags):
-            return self.model.objects.filter(Q(tags__name__in=tags) & Q(author=user)).order_by(self.ordering)
-        results = Q(author=user) & Q(title__icontains=title) if title else Q(author=user)
+            return self.model.objects.filter(
+                SearchPosts.tags_search(tags)
+                & author
+                & SearchPosts.full_text_search(title)
+            ).order_by(self.ordering)
+        results = author & SearchPosts.full_text_search(title) if title else author
         return self.model.objects.filter(results).order_by(self.ordering)
 
 
