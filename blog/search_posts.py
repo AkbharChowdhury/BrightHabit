@@ -26,6 +26,7 @@ class SearchPosts:
 
     def __author_search(self):
         return Author.get_author_by_id(self.__author)
+
     @staticmethod
     def tags_search(tags):
         return Q(tags__name__in=tags)
