@@ -4,7 +4,6 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import ContextMixin
-
 from blog.models import Post, Tag
 from .author import Author
 from .my_helper import MyHelper
@@ -47,14 +46,9 @@ class UserPostListView(ListView, CustomTags):
         title = self.request.GET.get('title')
         tags = self.request.GET.getlist('tags')
         author = Q(author=Author.get_author_by_username(username=self.kwargs.get('username')))
-        if tags and MyHelper.list_is_not_empty(tags):
-            return self.model.objects.filter(
-                SearchPosts.tags_search(tags)
-                & author
-                & SearchPosts.full_text_search(title)
-            ).order_by(self.ordering)
-        results = author & SearchPosts.full_text_search(title) if title else author
-        return self.model.objects.filter(results).order_by(self.ordering)
+        tags_search = SearchPosts.tags_search(tags) if tags and MyHelper.list_is_not_empty(tags) else Q()
+        return self.model.objects.filter(tags_search & author & SearchPosts.full_text_search(title)).order_by(
+            self.ordering)
 
 
 class PostDetailView(DetailView):
