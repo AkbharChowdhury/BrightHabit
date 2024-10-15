@@ -7,6 +7,10 @@
 
 {% block tags %}
     {% include 'partials/tags.html' with tags=tags selected_tags=request.GET.tags %}
+{#    {% for tag in tags %}#}
+{#        <button>{{ tag }}</button>#}
+{##}
+{#{% endfor %}#}
 {% endblock %}
 {% block content %}
 

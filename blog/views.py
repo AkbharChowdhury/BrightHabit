@@ -13,7 +13,13 @@ from .search_posts import SearchPosts
 class CustomTags(ContextMixin):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['tags'] = Tag.objects.all()
+
+        if self.kwargs.get('username'):
+            author_username = Q(author=Author.get_author_by_username(username=self.kwargs.get('username')))
+            context['tags'] = Tag.objects.filter(Q(tags__in=Post.objects.filter(author_username))).distinct()
+            return context
+        post_tags = Tag.objects.filter(Q(tags__in=Post.objects.all())).distinct()
+        context['tags'] = post_tags
         return context
 
 
@@ -32,6 +38,9 @@ class PostListView(ListView, CustomTags):
         )
         if any(search.values()):
             return SearchPosts(**search).search().order_by(self.ordering)
+        post_tags = Tag.objects.filter(tags__in=Post.objects.all())
+        print(f'post_tags: {post_tags}')
+        print(f'All Tags: {Tag.objects.all()}')
         return self.model.objects.all().order_by(self.ordering)
 
 
