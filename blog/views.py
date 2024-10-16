@@ -38,9 +38,6 @@ class PostListView(ListView, CustomTags):
         )
         if any(search.values()):
             return SearchPosts(**search).search().order_by(self.ordering)
-        post_tags = Tag.objects.filter(tags__in=Post.objects.all())
-        print(f'post_tags: {post_tags}')
-        print(f'All Tags: {Tag.objects.all()}')
         return self.model.objects.all().order_by(self.ordering)
 
 
