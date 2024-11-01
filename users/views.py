@@ -11,7 +11,7 @@ class RegisterView(CreateView):
     template_name = 'users/register.html'
 
     def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, {"form": self.form_class})
+        return render(request, self.template_name, {'form': self.form_class})
 
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
@@ -21,7 +21,7 @@ class RegisterView(CreateView):
             messages.success(request, f'Account created for {username}. you can now login')
             return redirect(reverse_lazy('login'))
 
-        return render(request, 'users/register.html', {'form': form})
+        return render(request, self.template_name, {'form': form})
 
 
 class Profile(LoginRequiredMixin, CreateView):
