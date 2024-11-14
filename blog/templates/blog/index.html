@@ -1,53 +1,13 @@
 {% extends 'base.html' %}
 {% load humanize %}
-
 {% block title %}
     {{ app_name }} - inspire change
 {% endblock %}
 
 {% block tags %}
-
-
-
-{#    {% for tag in tags %}#}
-{#        <input type="checkbox"#}
-{#               class="btn-check"#}
-{#               id="{{ tag }}"#}
-{#               name="tags"#}
-{#               value="{{ tag }}">#}
-{#        <label class="btn btn-outline-{{ tag.colour }}" for="{{ tag }}">{{ tag }}</label>#}
-{##}
-{##}
-{##}
-{#    {% endfor %}#}
-
-    {#    {% for tag in tags %}#}
-    {#        <input type="checkbox"#}
-    {#               class="btn-check"#}
-    {#               id="{{ tag }}"#}
-    {#               name="tags"#}
-    {#               value="{{ tag }}"#}
-    {##}
-    {##}
-    {#        >#}
-    {#        <label class="btn btn-outline-{{ tag.colour }}" for="{{ tag }}">{{ tag }}</label>#}
-    {#    {% endfor %}#}
-    {#    {% for tag in selected_post_tags %}#}
-    {#        {{ tag }}#}
-    {#    {% endfor %}#}
-    {#    request.GET.tags #}
         {% include 'partials/tags.html' with tags=tags selected_tags=selected_tags %}
 {% endblock %}
 {% block content %}
-{##}
-{#    {{ selected_tags }}#}
-{#    {% for selected_tag in selected_tags %}#}
-{#       <h1> {{ selected_tag }} is done</h1>#}
-{#        {% if tag.name == selected_tag.name %} checked for {{ selected_tag.name }} {% endif %}#}
-{#    {% endfor %}#}
-
-{#    #}
-{##}
     {% include 'blog/partials/posts.html' with posts=posts only %}
     {% include 'blog/partials/pagination.html' %}
 {% endblock %}

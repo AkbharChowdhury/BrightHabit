@@ -7,7 +7,6 @@
             {% for selected_tag in selected_tags %}
                 {% if tag.name == selected_tag %} checked {% endif %}
             {% endfor %}
-
     >
     <label class="btn btn-outline-{{ tag.colour }}" for="{{ tag }}">{{ tag }}</label>
 {% endfor %}

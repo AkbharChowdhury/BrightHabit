@@ -35,10 +35,7 @@ class PostListView(ListView, CustomTags):
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
         context['app_name'] = APP_NAME
-        print(APP_NAME)
-        print(self.request.GET.getlist('tags'))
-        context['selected_tags'] =  self.request.GET.getlist('tags')
-        # print('user has selected', self.request.GET.getlist('tags'))
+        context['selected_tags'] = self.request.GET.getlist('tags')
         return context
 
     def get_queryset(self):
