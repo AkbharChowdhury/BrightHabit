@@ -14,9 +14,25 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
+# import environ
+#
+# env = environ.Env(
+#     # set casting, default value
+#     DEBUG=(bool, False)
+# )
+#
+# # Initialise environment variables
+# env = environ.Env()
+# environ.Env.read_env()
+
+# from os import getenv
+# from dotenv import load_dotenv
+#
+# load_dotenv()
+APP_NAME = 'BrightHabit'
+
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-mq9pauiw!dpwt0o#s%p5x!*$1fih8n&r7g%@v(pou7d&@*s^7a'

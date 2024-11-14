@@ -2,8 +2,8 @@ from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db import models
 from django.utils.safestring import mark_safe
-from ckeditor.fields import RichTextField
 from django.urls import reverse
+from ckeditor.fields import RichTextField
 
 
 class Tag(models.Model):
@@ -16,11 +16,11 @@ class Tag(models.Model):
 class Post(models.Model):
     title = models.CharField(max_length=100)
     body = RichTextField(blank=True, null=True)
+    post_snippet = models.CharField(max_length=100, blank=True, null=True)
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True, upload_to='images/')
     tags = models.ManyToManyField(Tag, blank=True, related_name='tags')
-
     search_fields = ('title', 'body', 'author')
 
     def __str__(self):
@@ -35,6 +35,8 @@ class Post(models.Model):
 
     @property
     def snippet(self):
+        if self.post_snippet:
+            return f'{self.__clean_text(self.post_snippet[:100])}...'
         return f'{self.__clean_text(self.body[:200])}...'
 
     def __clean_text(self, text):

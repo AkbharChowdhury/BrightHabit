@@ -4,6 +4,8 @@ from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import ContextMixin
+
+from BrightHabit.settings import APP_NAME
 from blog.models import Post, Tag
 from .author import Author
 from .my_helper import MyHelper
@@ -29,6 +31,11 @@ class PostListView(ListView, CustomTags):
     context_object_name = 'posts'
     ordering = '-date_posted'
     paginate_by = SearchPosts.records_per_page()
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['app_name'] = APP_NAME
+        return context
 
     def get_queryset(self):
         search = dict(
@@ -67,7 +74,7 @@ class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Post
     context_object_name = 'post'
     template_name = 'blog/create.html'
-    fields = ['title', 'body', 'image']
+    fields = ('title', 'body', 'image', 'tags')
     success_message = f'blog created'.title()
 
     def form_valid(self, form):
@@ -79,7 +86,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     context_object_name = 'post'
     template_name = 'blog/update.html'
-    fields = ['title', 'body', 'image']
+    fields = ('title', 'body', 'image', 'tags')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
