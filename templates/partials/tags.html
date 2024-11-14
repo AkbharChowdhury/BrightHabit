@@ -4,7 +4,10 @@
            id="{{ tag }}"
            name="tags"
            value="{{ tag }}"
-            {% if selected_tags == tag.name %} checked {% endif %}
+            {% for selected_tag in selected_tags %}
+                {% if tag.name == selected_tag %} checked {% endif %}
+            {% endfor %}
+
     >
     <label class="btn btn-outline-{{ tag.colour }}" for="{{ tag }}">{{ tag }}</label>
 {% endfor %}
