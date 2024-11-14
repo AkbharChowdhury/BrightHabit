@@ -74,7 +74,7 @@ class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     model = Post
     context_object_name = 'post'
     template_name = 'blog/create.html'
-    fields = ('title', 'body', 'image', 'tags')
+    fields = ('title', 'body', 'image', 'tags', 'post_snippet')
     success_message = f'blog created'.title()
 
     def form_valid(self, form):
@@ -86,7 +86,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     context_object_name = 'post'
     template_name = 'blog/update.html'
-    fields = ('title', 'body', 'image', 'tags')
+    fields = ('title', 'body', 'image', 'tags', 'post_snippet')
 
     def form_valid(self, form):
         form.instance.author = self.request.user
