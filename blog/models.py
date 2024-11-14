@@ -8,6 +8,7 @@ from ckeditor.fields import RichTextField
 
 class Tag(models.Model):
     name = models.CharField(max_length=100)
+    colour = models.CharField(max_length=100, blank=True, null=True)
 
     def __str__(self):
         return self.name
