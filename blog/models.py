@@ -16,7 +16,7 @@ class Tag(models.Model):
 
 class Post(models.Model):
     title = models.CharField(max_length=100)
-    body = RichTextField(blank=True, null=True)
+    body = RichTextField()
     post_snippet = models.CharField(max_length=100, blank=True, null=True)
     date_posted = models.DateTimeField(default=timezone.now)
     author = models.ForeignKey(User, on_delete=models.CASCADE)

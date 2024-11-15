@@ -8,7 +8,7 @@
         {% include 'partials/tags.html' with tags=tags selected_tags=selected_tags %}
 {% endblock %}
 {% block content %}
-    {% include 'blog/partials/posts.html' with posts=posts only %}
+    {% include 'blog/partials/posts.html' with posts=posts tag_colour=tag_colour %}
     {% include 'blog/partials/pagination.html' %}
 {% endblock %}
 

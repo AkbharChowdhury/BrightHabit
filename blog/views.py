@@ -11,6 +11,8 @@ from .author import Author
 from .my_helper import MyHelper
 from .search_posts import SearchPosts
 
+TAG_COLOUR = 'secondary'
+
 
 class CustomTags(ContextMixin):
     def get_context_data(self, *args, **kwargs):
@@ -36,6 +38,7 @@ class PostListView(ListView, CustomTags):
         context = super().get_context_data(**kwargs)
         context['app_name'] = APP_NAME
         context['selected_tags'] = self.request.GET.getlist('tags')
+        context['tag_colour'] = TAG_COLOUR
         return context
 
     def get_queryset(self):
@@ -69,6 +72,11 @@ class PostDetailView(DetailView):
     model = Post
     context_object_name = 'post'
     template_name = 'blog/detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tag_colour'] = TAG_COLOUR
+        return context
 
 
 class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
