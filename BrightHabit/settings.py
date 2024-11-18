@@ -1,7 +1,6 @@
 import os
 from pathlib import Path
 from decouple import config
-
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 APP_NAME = config('APP_NAME')
@@ -114,14 +113,28 @@ LOGIN_REDIRECT_URL = 'blog_index'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
+#
+# LIST_OF_EMAIL_RECIPIENTS = 'admin@gmail.com'
+#
+# EMAIL_USER_HOST = config('EMAIL_USER_HOST', default="key not found")
+# # EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
+# EMAIL_PORT = config('EMAIL_PORT', default=False, cast=int)
+# EMAIL_HOST = config('EMAIL_HOST', default="key not found")
+# EMAIL_BACKEND = config('EMAIL_BACKEND', default="key not found")
+# EMAIL_HOST_USER = config('EMAIL_HOST_USER', default="key not found")
+# EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default="key not found")
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False
 
-LIST_OF_EMAIL_RECIPIENTS = 'admin@gmail.com'
-
-EMAIL_USER_HOST = config('EMAIL_USER_HOST', default="key not found")
-# EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
-EMAIL_PORT = config('EMAIL_PORT', default=False, cast=int)
-EMAIL_HOST = config('EMAIL_HOST', default="key not found")
-EMAIL_BACKEND = config('EMAIL_BACKEND', default="key not found")
-EMAIL_HOST_USER = config('EMAIL_HOST_USER', default="key not found")
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default="key not found")
-EMAIL_USE_TLS = False
+EMAIL_BACKEND = config('EMAIL_BACKEND')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_PORT = config('EMAIL_PORT', cast=int)
+ADMIN_EMAIL = config('ADMIN_EMAIL')
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'sandbox.smtp.mailtrap.io'
+# EMAIL_HOST_USER = '83605160bbbaec'
+# EMAIL_HOST_PASSWORD = '836a2d925bf7de'
+# EMAIL_PORT = 2525
+# EMAIL_PORT = config('EMAIL_PORT', default=False, cast=int)

@@ -1,16 +1,16 @@
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.mail import send_mail
 from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import ContextMixin
 
-from BrightHabit.settings import APP_NAME
+from BrightHabit.settings import APP_NAME, ADMIN_EMAIL
 from blog.models import Post, Tag
 from .author import Author
 from .my_helper import MyHelper
 from .search_posts import SearchPosts
-from django.core.mail import send_mail
 
 TAG_COLOUR = 'secondary'
 
@@ -124,42 +124,19 @@ def about(request):
 
 
 def contact(request):
-    ADMIN_EMAIL = settings.EMAIL_USER_HOST
+    if request.method == 'POST':
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        email = request.POST.get('email')
+        if all([subject, message, email]):
+            print('email sent')
+            send_mail(
+                subject=request.POST.get('subject'),
+                message=request.POST.get('message'),
+                from_email=request.POST.get('email'),
+                recipient_list=[ADMIN_EMAIL],
+                fail_silently=False,
+            )
 
-    send_mail('subject', 'hello', 'a@gmail.com', [ADMIN_EMAIL], False)
-    # if request.method == 'POST':
-    #     send_mail(
-    #         subject=request.POST.get('subject'),
-    #         message=request.POST.get('message'),
-    #         from_email=request.POST.get('email'),
-    #         recipient_list=[ADMIN_EMAIL],
-    #         fail_silently=False,
-    #     )
     return render(request, 'emails/contact.html')
 
-
-from django.conf import settings
-from django.core.mail import send_mail
-from django.views.generic import FormView
-#
-# from .forms import ContactForm
-#
-#
-# class ContactFormView(FormView):
-#     form_class = ContactForm
-#     template_name = "emails/contact.html"
-#     # success_url = '/email-sent/'
-#     success_url = '/'
-#
-#     def form_valid(self, form):
-#         message = "{name} / {email} said: ".format(
-#             name=form.cleaned_data.get('name'),
-#             email=form.cleaned_data.get('email'))
-#         message += "\n\n{0}".format(form.cleaned_data.get('message'))
-#         send_mail(
-#             subject=form.cleaned_data.get('subject').strip(),
-#             message=message,
-#             from_email='contact-form@myapp.com',
-#             recipient_list=[settings.LIST_OF_EMAIL_RECIPIENTS],
-#         )
-#         return super(ContactFormView, self).form_valid(form)

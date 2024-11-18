@@ -1,0 +1,37 @@
+    <div class="card mb-4">
+                <div class="card-header text-capitalize">quick access</div>
+                <div class="card-body">
+                    <p class="card-text"> Please note that our website will going under maintenance on <span><strong>28 April</strong></span>
+                    </p>
+                    <div class="list-group text-capitalize">
+  <a href="{% url 'blog_contact' %}" class="list-group-item list-group-item-action{% if request.resolver_match.view_name == 'blog_contact' %}active{% endif %}
+"
+     {% if request.resolver_match.view_name == 'blog_contact' %}aria-current="true" {% endif %}
+>
+    Latest posts
+  </a>
+
+
+
+                     <a href="{% url 'blog_contact' %}" class="list-group-item list-group-item-action{% if request.resolver_match.view_name == 'blog_contact' %}active{% endif %}
+"
+     {% if request.resolver_match.view_name == 'blog_contact' %}aria-current="true" {% endif %}
+>
+    announcements  <span class="badge text-bg-danger rounded-pill">2</span>
+  </a>
+
+
+
+                     <a href="{% url 'blog_contact' %}" class="list-group-item list-group-item-action {% if request.resolver_match.view_name == 'blog_contact' %}active{% endif %}
+"
+     {% if request.resolver_match.view_name == 'blog_contact' %}aria-current="true" {% endif %}
+>
+   contact
+  </a>
+
+</div>
+
+
+                </div>
+            </div>
+        </div>

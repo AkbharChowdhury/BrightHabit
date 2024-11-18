@@ -1,5 +1,4 @@
 {% load static %}
-
 <!doctype html>
 <html lang="en">
 <head>
@@ -32,112 +31,47 @@
             <!-- Search widget-->
             <div class="card mb-4">
                 <div class="card-header text-capitalize">search</div>
-{#                {% include 'blog/partials/search.html' %}#}
 
                 <form role="search">
-    <div class="card-body">
-        <div class="input-group">
-            <input
-                    autocomplete="false"
-                    class="form-control"
-                    type="search"
-                    placeholder="Enter search term..."
-                    name="title"
-                    value='{{ request.GET.title }}'
-                    aria-label="Enter search term..."
-                    aria-describedby="button-search">
-            <button class="btn btn-primary" type="submit">Go!</button>
-        </div>
-    </div>
+                    <div class="card-body">
+                        <div class="input-group">
+                            <input
+                                    autocomplete="false"
+                                    class="form-control"
+                                    type="search"
+                                    placeholder="Enter search term..."
+                                    name="title"
+                                    value='{{ request.GET.title }}'
+                                    aria-label="Enter search term..."
+                                    aria-describedby="button-search">
+                            <button class="btn btn-primary" type="submit">Go!</button>
+                        </div>
+                    </div>
 
-    <div class="container pb-4 mt-2">
+                    <div class="container pb-4 mt-2">
 
-        {% block tags %}
-        {% endblock %}
+                        {% block tags %}
+                        {% endblock %}
 
-    </div>
+                    </div>
 
-</form>
-
-
-
-
-
-                {#                <div class="container pb-4 mt-2">#}
-                {#                    <button type="button" class="btn btn-outline-primary text-capitalize active">lifestyle</button>#}
-                {#                    <button type="button" class="btn btn-outline-primary text-capitalize">coding</button>#}
-                {#                    <button type="button" class="btn btn-outline-primary text-capitalize">politics</button>#}
-                {##}
-                {#                    {% include 'partials/tags.html' %}#}
-                {##}
-                {##}
-                {#                </div>#}
+                </form>
 
             </div>
 
             <!-- Side widget-->
-            <div class="card mb-4">
-                <div class="card-header text-capitalize">quick access</div>
-                <div class="card-body">
-                    <p class="card-text"> Please note that our website will going under maintenance on <span><strong>28 April</strong></span>
-                    </p>
-                    <div class="list-group text-capitalize">
-  <a href="{% url 'blog_contact' %}" class="list-group-item list-group-item-action{% if request.resolver_match.view_name == 'blog_contact' %}active{% endif %}
-"
-     {% if request.resolver_match.view_name == 'blog_contact' %}aria-current="true" {% endif %}
->
-    Latest posts
-  </a>
+
+            {% include 'partials/quick_access.html' %}
 
 
-
-                     <a href="{% url 'blog_contact' %}" class="list-group-item list-group-item-action{% if request.resolver_match.view_name == 'blog_contact' %}active{% endif %}
-"
-     {% if request.resolver_match.view_name == 'blog_contact' %}aria-current="true" {% endif %}
->
-    announcements  <span class="badge text-bg-danger rounded-pill">2</span>
-  </a>
-
-
-
-                     <a href="{% url 'blog_contact' %}" class="list-group-item list-group-item-action {% if request.resolver_match.view_name == 'blog_contact' %}active{% endif %}
-"
-     {% if request.resolver_match.view_name == 'blog_contact' %}aria-current="true" {% endif %}
->
-   contact
-  </a>
-{#  <a href="#" class="list-group-item list-group-item-action">announcements <span class="badge text-bg-danger rounded-pill">2</span></a>#}
-{#  <a href="{% url 'blog_contact' %}" class="list-group-item list-group-item-action">contact</a>#}
-</div>
-
-
-{#                    <ul class="list-group text-capitalize">#}
-{#                        <li class="list-group-item d-flex justify-content-between align-items-center">#}
-{#                            latest posts#}
-{#                        </li>#}
-{#                        <li class="list-group-item d-flex justify-content-between align-items-center">#}
-{#                            announcements#}
-{#                            <span class="badge text-bg-danger rounded-pill">2</span>#}
-{#                        </li>#}
-{#                        <li class="list-group-item d-flex justify-content-between align-items-center">#}
-{#                            calendars#}
-{#                        </li>#}
-{##}
-{#                        <li class="list-group-item d-flex justify-content-between align-items-center">#}
-{#                            contact#}
-{#                        </li>#}
-{#                    </ul>#}
-                </div>
-            </div>
         </div>
     </div>
-</div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-{% block scripts %}
-{% endblock %}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+    {% block scripts %}
+    {% endblock %}
 </body>
 </html>
 
