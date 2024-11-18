@@ -31,5 +31,5 @@ urlpatterns = [
     # path('contact/', ContactFormView.as_view(), name=name('contact')),
     path('contact/', contact, name=name('contact')),
 
-    # email_form.html
+    # contact.html
 ]

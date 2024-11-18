@@ -118,3 +118,10 @@ LOGIN_URL = 'login'
 LIST_OF_EMAIL_RECIPIENTS = 'admin@gmail.com'
 
 EMAIL_USER_HOST = config('EMAIL_USER_HOST', default="key not found")
+# EMAIL_USE_TLS = config('EMAIL_USE_TLS', default=False, cast=bool)
+EMAIL_PORT = config('EMAIL_PORT', default=False, cast=int)
+EMAIL_HOST = config('EMAIL_HOST', default="key not found")
+EMAIL_BACKEND = config('EMAIL_BACKEND', default="key not found")
+EMAIL_HOST_USER = config('EMAIL_HOST_USER', default="key not found")
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD', default="key not found")
+EMAIL_USE_TLS = False

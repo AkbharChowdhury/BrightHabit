@@ -121,17 +121,22 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 def about(request):
     return render(request, 'blog/about.html')
+
+
 def contact(request):
-    # ADMIN_EMAIL = settings.EMAIL_USER_HOST
-    # send_mail(
-    #     "Test subject",
-    #     "Here is the message.",
-    #     "from@example.com",
-    #     [ADMIN_EMAIL],
-    #     # "to@example.com"
-    #     fail_silently=False,
-    # )
-    return render(request, 'emails/email_form.html')
+    ADMIN_EMAIL = settings.EMAIL_USER_HOST
+
+    send_mail('subject', 'hello', 'a@gmail.com', [ADMIN_EMAIL], False)
+    # if request.method == 'POST':
+    #     send_mail(
+    #         subject=request.POST.get('subject'),
+    #         message=request.POST.get('message'),
+    #         from_email=request.POST.get('email'),
+    #         recipient_list=[ADMIN_EMAIL],
+    #         fail_silently=False,
+    #     )
+    return render(request, 'emails/contact.html')
+
 
 from django.conf import settings
 from django.core.mail import send_mail
@@ -142,7 +147,7 @@ from django.views.generic import FormView
 #
 # class ContactFormView(FormView):
 #     form_class = ContactForm
-#     template_name = "emails/email_form.html"
+#     template_name = "emails/contact.html"
 #     # success_url = '/email-sent/'
 #     success_url = '/'
 #
@@ -158,6 +163,3 @@ from django.views.generic import FormView
 #             recipient_list=[settings.LIST_OF_EMAIL_RECIPIENTS],
 #         )
 #         return super(ContactFormView, self).form_valid(form)
-
-
-
