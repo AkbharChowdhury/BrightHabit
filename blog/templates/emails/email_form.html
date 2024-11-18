@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %} {% block title %}
+    Contact us
+{% endblock %}
+
+{% block content %}
+    <form method="post" class="row g-3" novalidate>
+        {% csrf_token %}
+        <fieldset class="form-group">
+            <legend class="border-bottom text-capitalize">contact us</legend>
+            <p>Please fill in the contact form to make an enquiry</p>
+        </fieldset>
+        <div class="col-md-6">
+            <label for="inputEmail4" class="form-label">Email</label>
+            <input type="email" class="form-control" id="inputEmail4">
+        </div>
+        <div class="col-12">
+            <label for="subject" class="form-label">Subject</label>
+            <input type="text" class="form-control" name="subject" id="subject">
+        </div>
+        <div class="col-12">
+            <label for="message" class="form-label">Message</label>
+            <textarea class="form-control" id="message" name="message" rows="3"></textarea>
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary text-capitalize">send email</button>
+        </div>
+    </form>
+{% endblock %}

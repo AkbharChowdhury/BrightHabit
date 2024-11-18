@@ -2,19 +2,14 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
+
+from autofocus import Autofocus
 from .models import Profile
 
 
 # from crispy_forms.helper import FormHelper
 # from crispy_forms.layout import Layout, Submit, Field
 
-class Autofocus:
-    def __init__(self, fields):
-        self.fields = fields
-
-    def change_focus(self, old, new):
-        self.fields[old].widget.attrs.update({'autofocus': ''})
-        self.fields[new].widget.attrs.update({'autofocus': 'autofocus'})
 
 
 class UserRegisterForm(UserCreationForm):

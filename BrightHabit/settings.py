@@ -20,6 +20,8 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'blog.apps.BlogConfig',
     'users.apps.UsersConfig',
+
+    # 'floppyforms',
     "crispy_forms",
     "crispy_bootstrap5",
     'ckeditor',
@@ -112,3 +114,7 @@ LOGIN_REDIRECT_URL = 'blog_index'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 LOGIN_URL = 'login'
+
+LIST_OF_EMAIL_RECIPIENTS = 'admin@gmail.com'
+
+EMAIL_USER_HOST = config('EMAIL_USER_HOST', default="key not found")

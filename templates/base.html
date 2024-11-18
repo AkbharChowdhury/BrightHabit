@@ -81,22 +81,52 @@
                 <div class="card-body">
                     <p class="card-text"> Please note that our website will going under maintenance on <span><strong>28 April</strong></span>
                     </p>
-                    <ul class="list-group text-capitalize">
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            latest posts
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            announcements
-                            <span class="badge text-bg-danger rounded-pill">2</span>
-                        </li>
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            calendars
-                        </li>
+                    <div class="list-group text-capitalize">
+  <a href="{% url 'blog_contact' %}" class="list-group-item list-group-item-action{% if request.resolver_match.view_name == 'blog_contact' %}active{% endif %}
+"
+     {% if request.resolver_match.view_name == 'blog_contact' %}aria-current="true" {% endif %}
+>
+    Latest posts
+  </a>
 
-                        <li class="list-group-item d-flex justify-content-between align-items-center">
-                            contact
-                        </li>
-                    </ul>
+
+
+                     <a href="{% url 'blog_contact' %}" class="list-group-item list-group-item-action{% if request.resolver_match.view_name == 'blog_contact' %}active{% endif %}
+"
+     {% if request.resolver_match.view_name == 'blog_contact' %}aria-current="true" {% endif %}
+>
+    announcements  <span class="badge text-bg-danger rounded-pill">2</span>
+  </a>
+
+
+
+                     <a href="{% url 'blog_contact' %}" class="list-group-item list-group-item-action {% if request.resolver_match.view_name == 'blog_contact' %}active{% endif %}
+"
+     {% if request.resolver_match.view_name == 'blog_contact' %}aria-current="true" {% endif %}
+>
+   contact
+  </a>
+{#  <a href="#" class="list-group-item list-group-item-action">announcements <span class="badge text-bg-danger rounded-pill">2</span></a>#}
+{#  <a href="{% url 'blog_contact' %}" class="list-group-item list-group-item-action">contact</a>#}
+</div>
+
+
+{#                    <ul class="list-group text-capitalize">#}
+{#                        <li class="list-group-item d-flex justify-content-between align-items-center">#}
+{#                            latest posts#}
+{#                        </li>#}
+{#                        <li class="list-group-item d-flex justify-content-between align-items-center">#}
+{#                            announcements#}
+{#                            <span class="badge text-bg-danger rounded-pill">2</span>#}
+{#                        </li>#}
+{#                        <li class="list-group-item d-flex justify-content-between align-items-center">#}
+{#                            calendars#}
+{#                        </li>#}
+{##}
+{#                        <li class="list-group-item d-flex justify-content-between align-items-center">#}
+{#                            contact#}
+{#                        </li>#}
+{#                    </ul>#}
                 </div>
             </div>
         </div>

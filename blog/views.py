@@ -10,6 +10,7 @@ from blog.models import Post, Tag
 from .author import Author
 from .my_helper import MyHelper
 from .search_posts import SearchPosts
+from django.core.mail import send_mail
 
 TAG_COLOUR = 'secondary'
 
@@ -120,3 +121,43 @@ class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
 
 def about(request):
     return render(request, 'blog/about.html')
+def contact(request):
+    # ADMIN_EMAIL = settings.EMAIL_USER_HOST
+    # send_mail(
+    #     "Test subject",
+    #     "Here is the message.",
+    #     "from@example.com",
+    #     [ADMIN_EMAIL],
+    #     # "to@example.com"
+    #     fail_silently=False,
+    # )
+    return render(request, 'emails/email_form.html')
+
+from django.conf import settings
+from django.core.mail import send_mail
+from django.views.generic import FormView
+#
+# from .forms import ContactForm
+#
+#
+# class ContactFormView(FormView):
+#     form_class = ContactForm
+#     template_name = "emails/email_form.html"
+#     # success_url = '/email-sent/'
+#     success_url = '/'
+#
+#     def form_valid(self, form):
+#         message = "{name} / {email} said: ".format(
+#             name=form.cleaned_data.get('name'),
+#             email=form.cleaned_data.get('email'))
+#         message += "\n\n{0}".format(form.cleaned_data.get('message'))
+#         send_mail(
+#             subject=form.cleaned_data.get('subject').strip(),
+#             message=message,
+#             from_email='contact-form@myapp.com',
+#             recipient_list=[settings.LIST_OF_EMAIL_RECIPIENTS],
+#         )
+#         return super(ContactFormView, self).form_valid(form)
+
+
+
