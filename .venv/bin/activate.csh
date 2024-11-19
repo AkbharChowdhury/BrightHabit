@@ -10,15 +10,15 @@ alias deactivate 'test $?_OLD_VIRTUAL_PATH != 0 && setenv PATH "$_OLD_VIRTUAL_PA
 # Unset irrelevant variables.
 deactivate nondestructive
 
-setenv VIRTUAL_ENV '/Users/akbhar/Desktop/BrightHabit1/.venv'
+setenv VIRTUAL_ENV /Users/akbhar/Desktop/BrightHabit/.venv
 
 set _OLD_VIRTUAL_PATH="$PATH:q"
-setenv PATH "$VIRTUAL_ENV:q/bin:$PATH:q"
+setenv PATH "$VIRTUAL_ENV:q/"bin":$PATH:q"
 
 
 
-if ('' != "") then
-    setenv VIRTUAL_ENV_PROMPT ''
+if (BrightHabit != "") then
+    setenv VIRTUAL_ENV_PROMPT BrightHabit
 else
     setenv VIRTUAL_ENV_PROMPT "$VIRTUAL_ENV:t:q"
 endif

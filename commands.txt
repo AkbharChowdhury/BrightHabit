@@ -15,13 +15,13 @@ ck-editor
 pip install django-ckeditor
 Pillow
 pip install Pillow
-
+pip install decouple
 cd blog
 
-python manage.py runserver
+python3 manage.py runserver
 
 create an app
-python manage.py startapp users
+python manage.py startapp myapp
 
 migration
 python manage.py makemigrations
