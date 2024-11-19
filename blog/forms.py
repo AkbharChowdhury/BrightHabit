@@ -1,6 +1,6 @@
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit
-# import floppyforms as forms
+
 #
 #
 # class ContactForm(forms.Form):

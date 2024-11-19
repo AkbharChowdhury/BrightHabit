@@ -21,9 +21,10 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
 
     # 'floppyforms',
-    "crispy_forms",
+
     "crispy_bootstrap5",
     'ckeditor',
+    'crispy_forms'
 
 ]
 CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"

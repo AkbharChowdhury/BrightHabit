@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
@@ -129,14 +130,15 @@ def contact(request):
         message = request.POST.get('message')
         email = request.POST.get('email')
         if all([subject, message, email]):
-            print('email sent')
             send_mail(
-                subject=request.POST.get('subject'),
-                message=request.POST.get('message'),
-                from_email=request.POST.get('email'),
+                subject=subject,
+                message=message,
+                from_email=email,
                 recipient_list=[ADMIN_EMAIL],
                 fail_silently=False,
             )
+            messages.success(request, "Your enquiry has been sent!")
+        else:
+            messages.error(request, "Please fill all the fields")
 
     return render(request, 'emails/contact.html')
-
