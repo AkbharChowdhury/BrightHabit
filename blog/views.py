@@ -3,12 +3,12 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import ContextMixin
-
 from BrightHabit.settings import APP_NAME, ADMIN_EMAIL
-from blog.models import Post, Tag
+from blog.models import Post, Tag, ContactEmail
 from .author import Author
 from .my_helper import MyHelper
 from .search_posts import SearchPosts
@@ -142,3 +142,22 @@ def contact(request):
             messages.error(request, "Please fill all the fields")
 
     return render(request, 'emails/contact.html')
+
+
+# get request not showing errors
+class SendEmail(CreateView):
+    model = ContactEmail
+    template_name = 'emails/contact.html'
+    fields = '__all__'
+
+    def post(self, request, *args, **kwargs):
+        subject = request.POST.get('subject')
+        message = request.POST.get('message')
+        email = request.POST.get('email')
+
+        if all([subject, message, email]):
+            if send_mail(subject=subject, message=message, from_email=email, recipient_list=[ADMIN_EMAIL],
+                         fail_silently=False):
+                messages.success(request, "Your enquiry has been sent!")
+                return redirect(reverse_lazy('blog_contact'))
+        return render(request, self.template_name, {})

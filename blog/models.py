@@ -6,6 +6,12 @@ from django.urls import reverse
 from ckeditor.fields import RichTextField
 
 
+class ContactEmail(models.Model):
+    email = models.CharField(max_length=100)
+    subject = models.CharField(max_length=200)
+    message = models.TextField()
+
+
 class Tag(models.Model):
     name = models.CharField(max_length=100)
     colour = models.CharField(max_length=100, blank=True, null=True)

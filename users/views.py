@@ -9,10 +9,6 @@ from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 class RegisterView(CreateView):
     form_class = UserRegisterForm
     template_name = 'users/register.html'
-
-    def get(self, request, *args, **kwargs):
-        return render(request, self.template_name, {'form': self.form_class})
-
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():

@@ -7,11 +7,6 @@ from autofocus import Autofocus
 from .models import Profile
 
 
-# from crispy_forms.helper import FormHelper
-# from crispy_forms.layout import Layout, Submit, Field
-
-
-
 class UserRegisterForm(UserCreationForm):
     email = forms.EmailField()
     first_name = forms.CharField(max_length=200)
