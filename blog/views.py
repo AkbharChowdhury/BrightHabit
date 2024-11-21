@@ -48,8 +48,7 @@ class PostListView(ListView, CustomTags):
         return context
 
     def get_queryset(self):
-        search = dict(title=self.request.GET.get('title'), author=self.request.GET.get('author'),
-                      tags=self.request.GET.getlist('tags'), )
+        search = dict(title=self.request.GET.get('title'), tags=self.request.GET.getlist('tags'))
         if any(search.values()):
             return SearchPosts(**search).search().order_by(self.ordering)
         return self.model.objects.all().order_by(self.ordering)
@@ -65,7 +64,7 @@ class UserPostListView(ListView, CustomTags):
     def get_queryset(self):
         title = self.request.GET.get('title')
         tags = self.request.GET.getlist('tags')
-        author = Q(author=Author.get_author_by_username(username=self.kwargs.get('username')))
+        author = Q(author=Author.get_author_by_username(self.kwargs.get('username')))
         tags_search = SearchPosts.tags_search(tags) if tags and MyHelper.list_is_not_empty(tags) else Q()
         return self.model.objects.filter(tags_search & author & SearchPosts.full_text_search(title)).order_by(
             self.ordering)

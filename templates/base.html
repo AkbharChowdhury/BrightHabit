@@ -32,6 +32,7 @@
             <div class="card mb-4">
                 <div class="card-header text-capitalize">search</div>
 
+
                 <form role="search">
                     <div class="card-body">
                         <div class="input-group">
@@ -49,21 +50,23 @@
                     </div>
 
                     <div class="container pb-4 mt-2">
-
-                        {% block tags %}
-                        {% endblock %}
+                        
 
                         <div class="form-check text-capitalize">
-                            <input class="form-check-input" type="checkbox" id="chk_toggle_tags" name="show_all_tags" {% if request.GET.show_all_tags %} checked {% endif %}>
+                            <input class="form-check-input" type="checkbox" id="chk_toggle_tags" name="show_all_tags"
+                                   {% if request.GET.show_all_tags %} checked {% endif %}>
                             <label class="form-check-label" for="chk_toggle_tags">
                                 show all
                             </label>
                         </div>
 
+                        {% block tags %}
+                        {% endblock %}
+
 
                     </div>
-
                 </form>
+
 
             </div>
 
