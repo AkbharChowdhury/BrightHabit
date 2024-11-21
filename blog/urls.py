@@ -8,8 +8,8 @@ from .views import (
     PostDeleteView,
     UserPostListView,
     # ContactFormView,
-    # contact,
-    SendEmail
+    contact,
+    ContactView
 )
 
 
@@ -31,7 +31,7 @@ urlpatterns = [
 
     # path('contact/', ContactFormView.as_view(), name=name('contact')),
     # path('contact/', contact, name=name('contact')),
-    path('contact/', SendEmail.as_view(), name=name('contact')),
+    path('contact/', ContactView.as_view(), name=name('contact')),
 
     # contact.html
 ]

@@ -9,6 +9,7 @@ from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 class RegisterView(CreateView):
     form_class = UserRegisterForm
     template_name = 'users/register.html'
+
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
@@ -39,5 +40,3 @@ class Profile(LoginRequiredMixin, CreateView):
             context['profile_form'].save()
             messages.success(request, f'Your profile has been updated!')
             return redirect('profile')
-
-
