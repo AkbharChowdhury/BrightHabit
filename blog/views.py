@@ -26,7 +26,9 @@ class CustomTags(ContextMixin):
             author_username = Q(author=Author.get_author_by_username(username=self.kwargs.get('username')))
             context['tags'] = Tag.objects.filter(Q(tags__in=Post.objects.filter(author_username))).distinct()
             return context
-        tags = Tag.objects.filter(Q(tags__in=Post.objects.all())).distinct() if 'show_all_tags' in self.request.GET else Tag.objects.filter(Q(tags__in=Post.objects.all())).distinct()[:self.MIN_NUM_TAGS]
+        tags = Tag.objects.filter(
+            Q(tags__in=Post.objects.all())).distinct() if 'show_all_tags' in self.request.GET else Tag.objects.filter(
+            Q(tags__in=Post.objects.all())).distinct()[:self.MIN_NUM_TAGS]
         context['tags'] = tags
         return context
 
@@ -46,19 +48,8 @@ class PostListView(ListView, CustomTags):
         return context
 
     def get_queryset(self):
-        if 'chk_toggle_tags' in self.request.GET:
-            print('toggle tags')
-
-        search = dict(
-            title=self.request.GET.get('title'),
-            author=self.request.GET.get('author'),
-            tags=self.request.GET.getlist('tags'),
-        )
-        # btn_toggle_show = self.request.GET.get('toggle_show')
-        # if btn_toggle_show:
-        #     print("yes")
-
-        # show_all
+        search = dict(title=self.request.GET.get('title'), author=self.request.GET.get('author'),
+                      tags=self.request.GET.getlist('tags'), )
         if any(search.values()):
             return SearchPosts(**search).search().order_by(self.ordering)
         return self.model.objects.all().order_by(self.ordering)
