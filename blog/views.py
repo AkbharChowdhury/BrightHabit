@@ -125,34 +125,6 @@ def about(request):
     return render(request, 'blog/about.html')
 
 
-def contact(request):
-    if request.method == 'GET':
-        print('this is a get request')
-        return render(request,
-                      'emails/contact.html',
-                      {'form': ContactEmail()})
-
-    if request.method == 'POST':
-        subject = request.POST.get('subject')
-        message = request.POST.get('message')
-        email = request.POST.get('email')
-        form = ContactEmail(data=request.POST)
-
-        if all([subject, message, email]):
-            send_mail(
-                subject=subject,
-                message=message,
-                from_email=email,
-                recipient_list=[ADMIN_EMAIL],
-                fail_silently=False,
-            )
-            messages.success(request, "Your enquiry has been sent!")
-        else:
-            messages.error(request, "Please fill all the fields")
-
-    return render(request, 'emails/contact.html')
-
-
 # get request not showing errors
 class ContactView(CreateView):
     model = ContactEmail
@@ -165,8 +137,6 @@ class ContactView(CreateView):
         message = request.POST.get('message')
         email = request.POST.get('email')
         form = self.form_class(request.POST)
-
-        # if all([subject, message, email]):
         if form.is_valid():
             if send_mail(subject=subject, message=message, from_email=email, recipient_list=[ADMIN_EMAIL],
                          fail_silently=False):

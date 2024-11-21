@@ -7,8 +7,6 @@ from .views import (
     PostUpdateView,
     PostDeleteView,
     UserPostListView,
-    # ContactFormView,
-    contact,
     ContactView
 )
 
@@ -24,14 +22,8 @@ urlpatterns = [
     path('post/new', PostCreateView.as_view(), name=name('create')),
     path('post/<int:pk>/update', PostUpdateView.as_view(), name=name('update')),
     path('post/<int:pk>/delete', PostDeleteView.as_view(), name=name('delete')),
-
     path('post/<int:pk>/delete', PostDeleteView.as_view(), name=name('delete')),
-
     path('about/', about, name=name('about')),
-
-    # path('contact/', ContactFormView.as_view(), name=name('contact')),
-    # path('contact/', contact, name=name('contact')),
     path('contact/', ContactView.as_view(), name=name('contact')),
 
-    # contact.html
 ]
