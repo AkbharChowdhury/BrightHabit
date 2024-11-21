@@ -18,6 +18,8 @@ TAG_COLOUR = 'secondary'
 
 
 class CustomTags(ContextMixin):
+    MIN_NUM_TAGS = 3
+
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
 
@@ -25,8 +27,12 @@ class CustomTags(ContextMixin):
             author_username = Q(author=Author.get_author_by_username(username=self.kwargs.get('username')))
             context['tags'] = Tag.objects.filter(Q(tags__in=Post.objects.filter(author_username))).distinct()
             return context
+        if 'show_all_tags' in self.request.GET:
+            post_tags = Tag.objects.filter(Q(tags__in=Post.objects.all())).distinct()
+            context['tags'] = post_tags
+            return context
 
-        post_tags = Tag.objects.filter(Q(tags__in=Post.objects.all())).distinct()
+        post_tags = Tag.objects.filter(Q(tags__in=Post.objects.all())).distinct()[:self.MIN_NUM_TAGS]
         context['tags'] = post_tags
         return context
 
@@ -46,14 +52,17 @@ class PostListView(ListView, CustomTags):
         return context
 
     def get_queryset(self):
+        if 'chk_toggle_tags' in self.request.GET:
+            print('toggle tags')
+
         search = dict(
             title=self.request.GET.get('title'),
             author=self.request.GET.get('author'),
             tags=self.request.GET.getlist('tags'),
         )
-        btn_toggle_show = self.request.GET.get('toggle_show')
-        if btn_toggle_show:
-            print("yes")
+        # btn_toggle_show = self.request.GET.get('toggle_show')
+        # if btn_toggle_show:
+        #     print("yes")
 
         # show_all
         if any(search.values()):
