@@ -31,12 +31,13 @@ class Profile(LoginRequiredMixin, CreateView):
         })
 
     def post(self, request, *args, **kwargs):
-        context = {
-            'user_form': UserUpdateForm(request.POST, instance=request.user),
-            'profile_form': ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
-        }
+        context = dict(
+            user_form=UserUpdateForm(request.POST, instance=request.user),
+            profile_form=ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+        )
+
         if context['user_form'].is_valid() and context['profile_form'].is_valid():
             context['user_form'].save()
             context['profile_form'].save()
-            messages.success(request, f'Your profile has been updated!')
+            messages.success(request, 'your profile has been updated!'.capitalize())
             return redirect('profile')

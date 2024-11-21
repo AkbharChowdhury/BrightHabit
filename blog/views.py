@@ -132,11 +132,9 @@ def about(request):
     return render(request, 'blog/about.html')
 
 
-# get request not showing errors
 class ContactView(CreateView):
     model = ContactEmail
     template_name = 'emails/contact.html'
-    # fields = '__all__'
     form_class = ContactEmailForm
 
     def post(self, request, *args, **kwargs):
