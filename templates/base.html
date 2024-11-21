@@ -53,6 +53,11 @@
                         {% block tags %}
                         {% endblock %}
 
+                        <button type="submit" name="toggle_show" id="btn_toggle_show" class="btn btn-link" value="show_all">
+
+                        </button>
+
+
                     </div>
 
                 </form>
@@ -72,6 +77,47 @@
             crossorigin="anonymous"></script>
     {% block scripts %}
     {% endblock %}
+    <script>
+
+
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const toggleShow = urlParams.get('toggle_show')
+
+        // console.log(showAll.toString())
+        const btnToggleShow = document.getElementById('btn_toggle_show');
+
+
+        const showLess = 'Show less'
+        const showAll = 'Show all'
+        btnToggleShow.innerText = showAll
+
+        if (new URL(window.location.href).searchParams.has('toggle_show')) {
+            if (toggleShow.toString() === 'show_all'){
+                console.log('show more content')
+            }
+
+        }
+        // if (){
+        //     console.warn(toggleShow)
+        //
+        // }
+
+        // if (btnToggleShow) {
+        //
+        //
+        //     if (btnToggleShow.innerText === showLess) {
+        //         btnToggleShow.innerText = showMore
+        //     } else {
+        //         btnToggleShow.innerText = showLess
+        //
+        //     }
+        //     // btnShowAll.innerText = 'Show less'
+        // } else {
+        //     console.warn("no")
+        // }
+        // alert(queryString);
+    </script>
 </body>
 </html>
 

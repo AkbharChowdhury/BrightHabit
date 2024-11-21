@@ -25,6 +25,7 @@ class CustomTags(ContextMixin):
             author_username = Q(author=Author.get_author_by_username(username=self.kwargs.get('username')))
             context['tags'] = Tag.objects.filter(Q(tags__in=Post.objects.filter(author_username))).distinct()
             return context
+
         post_tags = Tag.objects.filter(Q(tags__in=Post.objects.all())).distinct()
         context['tags'] = post_tags
         return context
@@ -50,6 +51,11 @@ class PostListView(ListView, CustomTags):
             author=self.request.GET.get('author'),
             tags=self.request.GET.getlist('tags'),
         )
+        btn_toggle_show = self.request.GET.get('toggle_show')
+        if btn_toggle_show:
+            print("yes")
+
+        # show_all
         if any(search.values()):
             return SearchPosts(**search).search().order_by(self.ordering)
         return self.model.objects.all().order_by(self.ordering)
@@ -69,6 +75,13 @@ class UserPostListView(ListView, CustomTags):
         tags_search = SearchPosts.tags_search(tags) if tags and MyHelper.list_is_not_empty(tags) else Q()
         return self.model.objects.filter(tags_search & author & SearchPosts.full_text_search(title)).order_by(
             self.ordering)
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['app_name'] = APP_NAME
+        context['selected_tags'] = self.request.GET.getlist('tags')
+        context['tag_colour'] = TAG_COLOUR
+        return context
 
 
 class PostDetailView(DetailView):
