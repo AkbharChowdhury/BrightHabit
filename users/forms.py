@@ -34,9 +34,6 @@ class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
     username = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
 
-    # def username_exists(username):
-    #     return User.objects.filter(username=username).exists()
-
     class Meta:
         model = User
         fields = ('username', 'email')
@@ -45,4 +42,4 @@ class UserUpdateForm(forms.ModelForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ('image',)
+        fields = ['image']
