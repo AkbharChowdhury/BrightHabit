@@ -22,14 +22,20 @@ class UserRegisterForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data["email"]
-        if User.objects.filter(email=email).exists():
+        if self.__email_exists(email):
             raise ValidationError("A user with this email already exists!")
         return email
+
+    def __email_exists(self, email):
+        return User.objects.filter(email=email).exists()
 
 
 class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField()
     username = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
+
+    # def username_exists(username):
+    #     return User.objects.filter(username=username).exists()
 
     class Meta:
         model = User
