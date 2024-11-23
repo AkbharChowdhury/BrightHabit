@@ -26,9 +26,13 @@ class Profile(LoginRequiredMixin, CreateView):
     user_form = 'user_form'
     profile_form = 'profile_form'
 
+    def get_user_form(self, request):
+        request_method = None if request.method == 'GET' else self.request.POST
+        return UserUpdateForm(request_method, instance=request.user, current_user=request.user)
+
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, {
-            self.user_form: UserUpdateForm(instance=request.user),
+            self.user_form: self.get_user_form(request),
             self.profile_form: ProfileUpdateForm(instance=request.user.profile)
         })
 
@@ -36,14 +40,14 @@ class Profile(LoginRequiredMixin, CreateView):
         user_form = self.user_form
         profile_fom = self.profile_form
         context = dict(
-            user_form=UserUpdateForm(request.POST, instance=request.user),
+            user_form=self.get_user_form(request),
             profile_form=ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
         )
+        if not context[user_form].is_valid() and context[profile_fom].is_valid():
+            messages.error(request, "Whoops, something went wrong.")
+            return render(request, self.template_name, context)
 
-        if context[user_form].is_valid() and context[profile_fom].is_valid():
-            context[user_form].save()
-            context[profile_fom].save()
-            messages.success(request, 'your profile has been updated!'.capitalize())
-            return redirect('profile')
-        messages.error(request, "Whoops, something went wrong.")
-        return render(request, self.template_name, context)
+        context[user_form].save()
+        context[profile_fom].save()
+        messages.success(request, 'your profile has been updated!'.capitalize())
+        return redirect('profile')

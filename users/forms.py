@@ -32,13 +32,18 @@ class UserUpdateForm(forms.ModelForm):
     email = forms.EmailField(required=True)
     username = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
 
+    def __init__(self, *args, **kwargs):
+        self.current_user = kwargs.pop('current_user', None)
+        super().__init__(*args, **kwargs)
+    #     https://forum.djangoproject.com/t/using-request-user-in-forms-py/19184/4
+
     class Meta:
         model = User
         fields = ('username', 'email')
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if self.email_exists(email=email, excluded_email='john@gmail.com'):
+        if self.email_exists(email=email, excluded_email=self.current_user.email):
             raise ValidationError("A user with this email is registered.")
         return email
 

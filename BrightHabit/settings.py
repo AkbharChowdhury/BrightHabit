@@ -1,6 +1,8 @@
 import os
 from pathlib import Path
 from decouple import config
+
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
 APP_NAME = config('APP_NAME')
@@ -29,6 +31,7 @@ CRISPY_ALLOWED_TEMPLATE_PACKS = "bootstrap5"
 CRISPY_TEMPLATE_PACK = "bootstrap5"
 
 MIDDLEWARE = [
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -117,4 +120,3 @@ EMAIL_HOST_USER = config('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
 EMAIL_PORT = config('EMAIL_PORT', cast=int)
 ADMIN_EMAIL = config('ADMIN_EMAIL')
-
