@@ -1,7 +1,6 @@
 install django
 pip install django
 pip install --upgrade pip
-
 install crispy forms
 pip install django-crispy-forms
 pip install crispy-bootstrap5
@@ -50,14 +49,3 @@ johndoe1
 password1239
 janeDoe
 password493029
-
-
-
-modules and packages used
-pip install django
-pip install --upgrade pip
-pip install django-crispy-forms
-pip install crispy-bootstrap5
-pip install django-ckeditor
-pip install Pillow
-pip install decouple
