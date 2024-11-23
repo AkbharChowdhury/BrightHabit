@@ -39,7 +39,7 @@ class UserUpdateForm(forms.ModelForm):
     def clean_email(self):
         email = self.cleaned_data.get('email')
         if self.email_exists(email=email, excluded_email='john@gmail.com'):
-            raise forms.ValidationError("A user with this email is registered.")
+            raise ValidationError("A user with this email is registered.")
         return email
 
     def email_exists(self, email: str, excluded_email: str):
