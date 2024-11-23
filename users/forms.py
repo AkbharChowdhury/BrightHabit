@@ -2,7 +2,6 @@ from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
-
 from autofocus import Autofocus
 from .custom_validation import CustomValidation
 from .models import Profile
@@ -24,7 +23,7 @@ class UserRegisterForm(UserCreationForm):
     def clean_email(self):
         email = self.cleaned_data["email"]
         if CustomValidation.email_exists(email):
-            raise ValidationError("A user with this email already exists!")
+            raise ValidationError(CustomValidation.email_exists_error_message())
         return email
 
 
@@ -35,7 +34,6 @@ class UserUpdateForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         self.current_user = kwargs.pop('current_user', None)
         super().__init__(*args, **kwargs)
-    #     https://forum.djangoproject.com/t/using-request-user-in-forms-py/19184/4
 
     class Meta:
         model = User
@@ -43,12 +41,9 @@ class UserUpdateForm(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if self.email_exists(email=email, excluded_email=self.current_user.email):
-            raise ValidationError("A user with this email is registered.")
+        if CustomValidation.email_exists_with_exclusion(email=email, excluded_email=self.current_user.email):
+            raise ValidationError(CustomValidation.email_exists_error_message())
         return email
-
-    def email_exists(self, email: str, excluded_email: str):
-        return User.objects.filter(email=email).exclude(email=excluded_email).exists()
 
 
 class ProfileUpdateForm(forms.ModelForm):
