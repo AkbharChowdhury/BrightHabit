@@ -1,42 +1,43 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
 
-{% block title %}profile{% endblock %}
+{% block title %}
+profile
+{% endblock %}
 {% block content %}
-    <div class="card">
-        <div class="card-body">
-            <div class="row">
-                <div class="col-md-4">
-                    <img src="{{ user.profile.image.url }}"
-                         class="img-fluid rounded-circle ratio ratio-1x1 overflow-hidden card-img-top"
-                         style="object-fit: cover" width="100" height="100"
-                         alt="{{ user.username }} profile">
-                </div>
-                <div class="col">
-                    <h2>{{ user.username }}</h2>
-                    <p> {{ user.email }}
-                    </p>
-                </div>
-                <div class="col">
-                </div>
+<div class="card">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-4">
+                <img src="{{ user.profile.image.url }}"
+                     class="img-fluid rounded-circle ratio ratio-1x1 overflow-hidden card-img-top"
+                     style="object-fit: cover" width="100" height="100"
+                     alt="{{ user.username }} profile">
+            </div>
+            <div class="col">
+                <h2>{{ user.username }}</h2>
+                <p> {{ user.email }}
+                </p>
+            </div>
+            <div class="col">
             </div>
         </div>
     </div>
+</div>
 
-    <form method="post" novalidate enctype="multipart/form-data">
-        {% csrf_token %}
-        <fieldset class="form-group">
-            <legend class="border-bottom mb-4 text-capitalize"> profile info</legend>
-            {{ user_form|crispy }}
-            {{ profile_form|crispy }}
-        </fieldset>
+<form method="post" novalidate enctype="multipart/form-data">
+    {% csrf_token %}
+    <fieldset class="form-group">
+        <legend class="border-bottom mb-4 text-capitalize"> profile info</legend>
 
-        <div class="form-group pb-3">
-            <button type="submit" class="btn btn-outline-info text-capitalize">update profile</button>
-        </div>
-    </form>
+        {{ u_form|crispy }}
+        {{ p_form|crispy }}
+    </fieldset>
 
-
+    <div class="form-group pb-3">
+        <button type="submit" class="btn btn-outline-info text-capitalize">update profile</button>
+    </div>
+</form>
 
 
 {% endblock %}

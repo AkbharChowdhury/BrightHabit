@@ -4,6 +4,7 @@ from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
 from autofocus import Autofocus
+from .custom_validation import CustomValidation
 from .models import Profile
 
 
@@ -22,24 +23,39 @@ class UserRegisterForm(UserCreationForm):
 
     def clean_email(self):
         email = self.cleaned_data["email"]
-        if self.__email_exists(email):
+        if CustomValidation.email_exists(email):
             raise ValidationError("A user with this email already exists!")
         return email
 
-    def __email_exists(self, email):
-        return User.objects.filter(email=email).exists()
-
 
 class UserUpdateForm(forms.ModelForm):
-    email = forms.EmailField()
+    email = forms.EmailField(required=True)
     username = forms.CharField(widget=forms.TextInput(attrs={'readonly': 'readonly'}))
 
     class Meta:
         model = User
         fields = ('username', 'email')
 
+    def clean_email(self):
+        email = self.cleaned_data.get('email')
+        email_exists = (User.objects.filter(email=email)
+                        .exclude(email='john@gmail.com')
+                        .exists())
+        print(f'{email_exists=}')
+
+        # if 'admin@gmail.com' in email:
+        if email_exists:
+            raise forms.ValidationError("A user with this email is registered.")
+        return email
+
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['image']
+
+    # def clean_image(self):
+    #     image = self.cleaned_data.get('image', False)
+    #     if not self.instance.image == image:
+    #         raise ValidationError('d')
+    #     return image

@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
@@ -26,18 +27,45 @@ class Profile(LoginRequiredMixin, CreateView):
 
     def get(self, request, *args, **kwargs):
         return render(request, self.template_name, {
-            'user_form': UserUpdateForm(instance=request.user),
-            'profile_form': ProfileUpdateForm(instance=request.user.profile)
+            'u_form': UserUpdateForm(instance=request.user),
+            'p_form': ProfileUpdateForm(instance=request.user.profile)
         })
 
     def post(self, request, *args, **kwargs):
         context = dict(
-            user_form=UserUpdateForm(request.POST, instance=request.user),
-            profile_form=ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
+            u_form=UserUpdateForm(request.POST, instance=request.user),
+            p_form=ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
         )
 
-        if context['user_form'].is_valid() and context['profile_form'].is_valid():
-            context['user_form'].save()
-            context['profile_form'].save()
+        if context['u_form'].is_valid() and context['p_form'].is_valid():
+            context['u_form'].save()
+            context['p_form'].save()
             messages.success(request, 'your profile has been updated!'.capitalize())
             return redirect('profile')
+        messages.error(request, "Please fill all the fields")
+        # return redirect('profile')
+        return render(request, 'users/profile.html', context)
+
+@login_required
+def profile(request):
+    if request.method == 'POST':
+        u_form = UserUpdateForm(request.POST, instance=request.user)
+        p_form = ProfileUpdateForm(request.POST,
+                                   request.FILES,
+                                   instance=request.user.profile)
+        if u_form.is_valid() and p_form.is_valid():
+            u_form.save()
+            p_form.save()
+            messages.success(request, f'Your account has been updated!')
+            return redirect('profile')
+
+    else:
+        u_form = UserUpdateForm(instance=request.user)
+        p_form = ProfileUpdateForm(instance=request.user.profile)
+
+    context = {
+        'u_form': u_form,
+        'p_form': p_form
+    }
+
+    return render(request, 'users/profile.html', context)
