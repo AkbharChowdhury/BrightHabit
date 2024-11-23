@@ -38,24 +38,15 @@ class UserUpdateForm(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        email_exists = (User.objects.filter(email=email)
-                        .exclude(email='john@gmail.com')
-                        .exists())
-        print(f'{email_exists=}')
-
-        # if 'admin@gmail.com' in email:
-        if email_exists:
+        if self.email_exists(email=email, excluded_email='john@gmail.com'):
             raise forms.ValidationError("A user with this email is registered.")
         return email
+
+    def email_exists(self, email: str, excluded_email: str):
+        return User.objects.filter(email=email).exclude(email=excluded_email).exists()
 
 
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
         fields = ['image']
-
-    # def clean_image(self):
-    #     image = self.cleaned_data.get('image', False)
-    #     if not self.instance.image == image:
-    #         raise ValidationError('d')
-    #     return image
