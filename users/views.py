@@ -49,6 +49,7 @@ class Profile(LoginRequiredMixin, CreateView):
         )
         if not context[user_form].is_valid() and context[profile_fom].is_valid():
             messages.error(request, "Whoops, something went wrong.")
+            # return redirect('profile')
             return render(request, self.template_name, context)
 
         context[user_form].save()

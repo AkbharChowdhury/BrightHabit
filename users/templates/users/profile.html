@@ -23,7 +23,7 @@ profile
 
         <div class="row">
 
-            <div class="mb-4">
+            <div class="mb-4" id="rank_section">
 
 
                 <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25"
@@ -46,7 +46,6 @@ profile
                 <h4>{{ num_posts }} posts</h4>
                 <p>Last posted: <strong>{{ last_posted.date_posted|naturaltime }}</strong></p>
                 <input type="hidden" value="{{ num_posts }}" id="num_posts">
-
             </div>
             <div class="col">
 
@@ -59,8 +58,11 @@ profile
                 <!--                <i class="fa-solid fa-heart fa-lg"></i>-->
                 <br>
                 <a class="btn btn-primary text-capitalize" href="#" role="button">my posts</a>
-                <div>
-                    2 <span class="badge text-bg-secondary">gaming</span>
+                <div class="mt-2">
+<!--                    2 <span class="badge text-bg-secondary">gaming</span>-->
+<!--                    1 <span class="badge text-bg-secondary">Politics</span>-->
+<!--                    1 <span class="badge text-bg-secondary">Coding</span>-->
+
                 </div>
 
             </div>
@@ -83,50 +85,5 @@ profile
 {% endblock %}
 
 {% block scripts %}
-<!--<script src="/rank.js"></script>-->
 <script src="{% static 'rank.js' %}"></script>
-<script>
-
-
-    //
-    // console.log(m)
-    // progressBar.setAttribute('style', 'width: 20%')
-    // progressBar.setAttribute('height', size);
-
-    // const numPosts = parseInt(document.getElementById('num_posts').getAttribute('value'));
-    // const rank = document.getElementById('rank');
-    // rank.style.color = getRankColour(numPosts)
-    // function getRankColour(numPosts) {
-    //
-    //
-    //     const ranks = {
-    //
-    //         'bronze': {
-    //             'colour': '#CE8946',
-    //             'num': 5
-    //         },
-    //
-    //
-    //         'silver': {
-    //             'colour': '#C0C0C0',
-    //             'num': 10
-    //         },
-    //
-    //
-    //         'gold': {
-    //             'colour': '#FFD700',
-    //             'num': 11
-    //         },
-    //
-    //     }
-    //     if (numPosts <= ranks.bronze.num) {
-    //         return ranks.bronze.colour;
-    //     }
-    //     if (numPosts <= ranks.silver.num) {
-    //         return ranks.silver.colour;
-    //     }
-    //     return ranks.gold.colour;
-    //
-    // }
-</script>
 {% endblock %}
