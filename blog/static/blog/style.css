@@ -1,3 +1,10 @@
+:root {
+    --bronze: #CE8946;
+    --silver: #C0C0C0;
+    --gold: #FFD700;
+
+}
+
 .navbar-nav {
     font-weight: 500;
 }
@@ -5,4 +12,25 @@
 .navbar {
 
     background-color: #5f788a;
+}
+
+.fa-medal {
+    /*color:  var(--bronze);*/
+}
+
+.fa-heart {
+    color: red;
+}
+
+.bronze {
+    color: var(--bronze);
+}
+.silver {
+    color: var(--silver);
+}
+.gold {
+    color: var(--gold);
+}
+.blue{
+    color: blue;
 }

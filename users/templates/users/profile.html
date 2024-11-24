@@ -1,13 +1,39 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
+{% load humanize %}
+{% load static %}
 
 {% block title %}
 profile
 {% endblock %}
+
+
+{% block styles %}
+<style>
+    /*.progress-bar {*/
+    /*    background-color: #CE8946;*/
+    /*}*/
+</style>
+{% endblock %}
+
+
 {% block content %}
 <div class="card">
     <div class="card-body">
+
         <div class="row">
+
+            <div class="mb-4">
+
+
+                <div class="progress" role="progressbar" aria-label="Success example" aria-valuenow="25"
+                     aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress-bar" id="rank_progressbar"
+                    >%
+                    </div>
+                </div>
+            </div>
+
             <div class="col-md-4">
                 <img src="{{ user.profile.image.url }}"
                      class="img-fluid rounded-circle ratio ratio-1x1 overflow-hidden card-img-top"
@@ -16,10 +42,27 @@ profile
             </div>
             <div class="col">
                 <h2>{{ user.username }}</h2>
-                <p> {{ user.email }}
-                </p>
+                <p>{{ user.email }}</p>
+                <h4>{{ num_posts }} posts</h4>
+                <p>Last posted: <strong>{{ last_posted.date_posted|naturaltime }}</strong></p>
+                <input type="hidden" value="{{ num_posts }}" id="num_posts">
+
             </div>
             <div class="col">
+
+                <div class="float-end">
+                    <i class="fa-solid fa-medal fa-2xl" id="rank"></i>
+                    <div>
+
+                    </div>
+                </div>
+                <!--                <i class="fa-solid fa-heart fa-lg"></i>-->
+                <br>
+                <a class="btn btn-primary text-capitalize" href="#" role="button">my posts</a>
+                <div>
+                    2 <span class="badge text-bg-secondary">gaming</span>
+                </div>
+
             </div>
         </div>
     </div>
@@ -37,5 +80,53 @@ profile
     </div>
 </form>
 
+{% endblock %}
 
+{% block scripts %}
+<!--<script src="/rank.js"></script>-->
+<script src="{% static 'rank.js' %}"></script>
+<script>
+
+
+    //
+    // console.log(m)
+    // progressBar.setAttribute('style', 'width: 20%')
+    // progressBar.setAttribute('height', size);
+
+    // const numPosts = parseInt(document.getElementById('num_posts').getAttribute('value'));
+    // const rank = document.getElementById('rank');
+    // rank.style.color = getRankColour(numPosts)
+    // function getRankColour(numPosts) {
+    //
+    //
+    //     const ranks = {
+    //
+    //         'bronze': {
+    //             'colour': '#CE8946',
+    //             'num': 5
+    //         },
+    //
+    //
+    //         'silver': {
+    //             'colour': '#C0C0C0',
+    //             'num': 10
+    //         },
+    //
+    //
+    //         'gold': {
+    //             'colour': '#FFD700',
+    //             'num': 11
+    //         },
+    //
+    //     }
+    //     if (numPosts <= ranks.bronze.num) {
+    //         return ranks.bronze.colour;
+    //     }
+    //     if (numPosts <= ranks.silver.num) {
+    //         return ranks.silver.colour;
+    //     }
+    //     return ranks.gold.colour;
+    //
+    // }
+</script>
 {% endblock %}

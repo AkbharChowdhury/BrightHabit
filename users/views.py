@@ -4,6 +4,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+from blog.models import Post
 
 
 class RegisterView(CreateView):
@@ -30,9 +31,13 @@ class Profile(LoginRequiredMixin, CreateView):
         return UserUpdateForm(request_method, instance=request.user, current_user=request.user)
 
     def get(self, request, *args, **kwargs):
+        last_posted = Post.objects.filter(author=request.user).order_by('-date_posted')[1]
+
         return render(request, self.template_name, {
             self.user_form: self.get_user_form(request),
-            self.profile_form: ProfileUpdateForm(instance=request.user.profile)
+            self.profile_form: ProfileUpdateForm(instance=request.user.profile),
+            'num_posts': Post.objects.filter(author=request.user).count(),
+            'last_posted': last_posted
         })
 
     def post(self, request, *args, **kwargs):
