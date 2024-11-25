@@ -5,8 +5,6 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from blog.models import Post
-
-
 class RegisterView(CreateView):
     form_class = UserRegisterForm
     template_name = 'users/register.html'
@@ -31,13 +29,14 @@ class Profile(LoginRequiredMixin, CreateView):
         return UserUpdateForm(request_method, instance=request.user, current_user=request.user)
 
     def get(self, request, *args, **kwargs):
-        last_posted = Post.objects.filter(author=request.user).order_by('-date_posted')[1]
-
+        user_last_post = Post.objects.filter(author=request.user).order_by('-date_posted')
+        num_posts = Post.objects.filter(author=request.user).count()
         return render(request, self.template_name, {
             self.user_form: self.get_user_form(request),
             self.profile_form: ProfileUpdateForm(instance=request.user.profile),
-            'num_posts': Post.objects.filter(author=request.user).count(),
-            'last_posted': last_posted
+            'num_posts': num_posts,
+            'last_posted': user_last_post[0] if user_last_post.exists() else '',
+            'plural': 's' if num_posts > 1 else ''
         })
 
     def post(self, request, *args, **kwargs):

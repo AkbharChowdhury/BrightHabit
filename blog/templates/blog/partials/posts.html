@@ -2,12 +2,12 @@
 {% for post in posts %}
     <div class="row g-0  position-relative">
         <div class="col-md-6 mb-md-0 p-md-4">
-            {% if  post.image %}
+            {% if post.image %}
                 <img
                         style="object-fit: cover"
                         width="428"
                         height="200"
-                        {% if  post.image %}
+                        {% if post.image %}
                         src="{{ post.image.url }}"
                         {% endif %}
                         class="w-100"

@@ -29,6 +29,10 @@ class Post(models.Model):
     image = models.ImageField(null=True, blank=True, upload_to='images/')
     tags = models.ManyToManyField(Tag, blank=True, related_name='tags')
     search_fields = ('title', 'body', 'author')
+    likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
+
+    def total_likes(self):
+        return self.likes.count()
 
     def __str__(self):
         return self.title

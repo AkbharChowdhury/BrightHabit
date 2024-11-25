@@ -1,50 +1,96 @@
 {% extends 'base.html' %}
 {% load humanize %}
+{% load static %}
+
 
 {% block title %} {{ post.title }} {% endblock %}
+{% block styles %}
+<style>
+
+</style>
+{% endblock %}
+
 
 {% block content %}
-    <article>
-        <!-- Post header-->
-        <header class="mb-4">
-            <!-- Post title-->
-            <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
-            <!-- Post meta content-->
-            <div class="text-muted fst-italic mb-2">Posted on {{ post.date_posted|date }}
-                by {{ post.author.username }}
-                {% if post.author == user %}
-                    <span>
+<article>
+    <header class="mb-4">
+        <h1 class="fw-bolder mb-1">{{ post.title }}</h1>
+        <div class="text-muted fst-italic mb-2">Posted on {{ post.date_posted|date }}
+            by {{ post.author.username }}
+            {% if post.author == user %}
+            <span>
                     <a href="{% url 'blog_update' post.id %}" role="button"
                        class="btn btn-secondary text-capitalize btn-sm mt-1 mb-1">update</a>
                     <a href="{% url 'blog_delete' post.id %}" role="button"
                        class="btn btn-danger text-capitalize btn-sm mt-1 mb-1">delete</a>
                 </span>
+            {% endif %}
+        </div>
+        {% for tag in post.tags.all %}
+        <a class="badge bg-{{ tag.colour }} text-decoration-none">{{ tag }}</a>
+        {% endfor %}
+
+        <section class="post_likes">
+
+            <form method="post" id="like_toggle_form">
+                {% csrf_token %}
+                <input type="hidden" id="url" value="{% url 'blog_detail' post.pk %}">
+                <input type="hidden" id="post_id" name="post_id" value="{{ post.id }}">
+                {% if user.is_authenticated %}
+                <button name="btn_toggle_like"
+                        id="btn_toggle_like"
+                        class="remove_button_style"
+                        type="submit"
+                        value="{{ post.id }}">
+                    <i class="{{ liked_icon }} fa-heart fa-lg" id="like_icon" aria-hidden="true" type="submit"></i>
+                </button>
+
+                {% else %}
+                <small class="text-muted">Please login to like </small>
                 {% endif %}
-            </div>
-            {% for tag in post.tags.all %}
-                <a class="badge bg-{{ tag.colour }} text-decoration-none">{{ tag }}</a>
-
-            {% endfor %}
-            <!-- Post categories-->
-
-        </header>
-        <!-- Preview image figure-->
-        {% if  post.image %}
-            <figure class="mb-4">
-                <div class="ratio ratio-4x3">
-                    <img class="img-fluid rounded"
-                            {% if  post.image %}
-                         src="{{ post.image.url }}"
-                            {% endif %}
-                         alt="article image"/>
-                </div>
-
-            </figure>
-        {% endif %}
-        <!-- Post content-->
-        <section class="mb-5">
-            <p class="fs-5 mb-4">{{ post.get_content }}</p>
-
+                <span id="total_likes">{{ total_likes }}</span>
+            </form>
         </section>
-    </article>
+    </header>
+    <!-- Preview image figure-->
+    {% if post.image %}
+    <figure class="mb-4">
+        <div class="ratio ratio-4x3">
+            <img class="img-fluid rounded"
+                 {% if post.image %}
+                 src="{{ post.image.url }}"
+                 {% endif %}
+                 alt="article image"/>
+        </div>
+
+    </figure>
+    {% endif %}
+    <!-- Post content-->
+    <section class="mb-5">
+        <p class="fs-5 mb-4">{{ post.get_content }}</p>
+    </section>
+</article>
+<section id="author">
+    <hr>
+    <div class="card mb-3" style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{ post.author.profile.image.url }}" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title">{{ post.author.username }}</h5>
+                    <p>Name: {{ post.author.profile.full_name }} </p>
+                    {% if post.author.profile.bio %}
+                    <p class="card-text">{{ post.author.profile.bio }}<</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+{% block scripts %}
+<script src="{% static 'toggleLike.js' %}"></script>
+
 {% endblock %}

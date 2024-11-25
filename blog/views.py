@@ -3,16 +3,19 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
 from django.db.models import Q
-from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.views.generic.base import ContextMixin
+
 from BrightHabit.settings import APP_NAME, ADMIN_EMAIL
 from blog.models import Post, Tag, ContactEmail
 from .author import Author
+from .forms import ContactEmailForm
+from .http_js import HTTP_JS
 from .my_helper import MyHelper
 from .search_posts import SearchPosts
-from .forms import ContactEmailForm
 
 TAG_COLOUR = 'secondary'
 
@@ -82,9 +85,34 @@ class PostDetailView(DetailView):
     context_object_name = 'post'
     template_name = 'blog/detail.html'
 
+    def post(self, request, *args, **kwargs):
+        js = HTTP_JS(self.request)
+        if js.is_ajax() or js.is_fetch_request():
+            post_id = self.request.POST.get('post_id')
+            self.toggle_like(post_id)
+            return JsonResponse(self.like_data())
+
+    def toggle_like(self, post_id) -> None:
+        post = get_object_or_404(self.model, id=post_id)
+        post.likes.remove(self.request.user) if post.likes.filter(
+            id=self.request.user.id).exists() else post.likes.add(
+            self.request.user)
+
+    def like_data(self, context=None):
+        if context is None:
+            context = {}
+        post_likes = get_object_or_404(self.model, id=self.kwargs['pk'])
+        liked = False if post_likes.likes.filter(id=self.request.user.id).exists() else True
+        context['total_likes'] = post_likes.total_likes()
+        context['liked_icon'] = 'fa-regular' if liked else 'fa-solid'
+        context['liked'] = liked
+        return context
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['tag_colour'] = TAG_COLOUR
+        context.update(self.like_data(context=context))
+        self.like_data(context)
         return context
 
 

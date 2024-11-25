@@ -23,7 +23,8 @@ function constructProgressBar(numPosts) {
     const message = `only ${numLeftTillNextRank} more to posts to go till you reach ${nextRank()}`
     progressBar.style.background = getRankColour(numPosts);
     progressBar.style.width = `${percentagePosts}%`;
-    progressBar.innerText = `${percentagePosts}% ${message}`;
+    progressBar.innerText = `${percentagePosts}%`;
+    document.getElementById('message').innerText = message
     progressBar.setAttribute('aria-valuenow', percentagePosts);
 }
 
