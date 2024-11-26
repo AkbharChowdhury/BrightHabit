@@ -1,19 +1,26 @@
-  $(document).ready(function () {
-    $("#like_toggle_form").submit(function (e) {
+window.onload = function () {
+    document.querySelector('#like_toggle_form').addEventListener('submit', (e) => {
         e.preventDefault();
-        $.ajax({
-            url: $('#url').val(),
-            type: "POST",
-            data: {
-                csrfmiddlewaretoken: $("input[name=csrfmiddlewaretoken]").val(),
-                post_id: $('#post_id').val()
-            },
-            success: (data) => {
-                $('#total_likes').text(data.total_likes)
-                $('#like_icon').prop('class', `${data.liked_icon} fa-heart fa-lg`)
-            },
-            error: (e) => console.error(`There was an error with handling this request ${e.message}`)
-
+        toggleLike().then(data => {
+            document.querySelector('#total_likes').textContent = data['total_likes']
+            document.querySelector('#like_icon').setAttribute('class', `${data['liked_icon']} fa-heart fa-lg`)
         });
     });
-});
+
+    async function toggleLike() {
+        try {
+            const response = await fetch(document.querySelector('#url').value, {
+                method: 'POST',
+                body: JSON.stringify({'post_id': document.querySelector('#post_id').value}),
+                headers: {
+                    'Content-Type': 'application/json',
+                    "X-CSRFToken": document.querySelector("input[name=csrfmiddlewaretoken]").value,
+                },
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('Error:', error.message);
+        }
+    }
+
+}

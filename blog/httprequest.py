@@ -1,15 +1,21 @@
 import json
 
 
-class HTTP_JS:
+class HttpRequest:
     def __init__(self, request):
         self.request = request
 
-    def is_fetch_request(self):
+    def __is_fetch_request(self):
         return self.request.headers.get('X-Csrftoken') is not None
 
-    def is_ajax(self):
+    def __is_ajax(self):
         return self.request.headers.get('x-requested-with') == 'XMLHttpRequest'
+
+    def is_http_request(self):
+        return self.__is_fetch_request() or self.__is_ajax()
+
+    def get_post_id(self, id):
+        return self.request.POST.get(id) or json.loads(self.request.body.decode('utf-8'))[id]
 
     def get_id_form_data(self, id):
         return json.loads(self.request.body.decode('utf-8'))[id]

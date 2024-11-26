@@ -13,7 +13,7 @@ from BrightHabit.settings import APP_NAME, ADMIN_EMAIL
 from blog.models import Post, Tag, ContactEmail
 from .author import Author
 from .forms import ContactEmailForm
-from .http_js import HTTP_JS
+from .httprequest import HttpRequest
 from .my_helper import MyHelper
 from .search_posts import SearchPosts
 
@@ -86,10 +86,9 @@ class PostDetailView(DetailView):
     template_name = 'blog/detail.html'
 
     def post(self, request, *args, **kwargs):
-        js = HTTP_JS(self.request)
-        if js.is_ajax() or js.is_fetch_request():
-            post_id = self.request.POST.get('post_id')
-            self.toggle_like(post_id)
+        http_request = HttpRequest(self.request)
+        if http_request.is_http_request():
+            self.toggle_like(http_request.get_post_id('post_id'))
             return JsonResponse(self.like_data())
 
     def toggle_like(self, post_id) -> None:
