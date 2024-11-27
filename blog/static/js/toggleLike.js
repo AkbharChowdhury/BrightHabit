@@ -1,4 +1,4 @@
-window.onload = function () {
+window.onload = () => {
     document.querySelector('#like_toggle_form').addEventListener('submit', (e) => {
         e.preventDefault();
         toggleLike().then(data => {
@@ -11,7 +11,9 @@ window.onload = function () {
         try {
             const response = await fetch(document.querySelector('#url').value, {
                 method: 'POST',
-                body: JSON.stringify({'post_id': document.querySelector('#post_id').value}),
+                body: JSON.stringify({
+                    'post_id': document.querySelector('#post_id').value
+                }),
                 headers: {
                     'Content-Type': 'application/json',
                     "X-CSRFToken": document.querySelector("input[name=csrfmiddlewaretoken]").value,

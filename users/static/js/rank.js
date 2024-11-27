@@ -1,14 +1,14 @@
 const ranks = rankDetails();
 const numPosts = parseInt(document.getElementById('num_posts').getAttribute('value'))
-const rank = document.getElementById('rank');
-rank.style.color = getRankColour(numPosts);
+document.getElementById('rank').style.color = getRankColour(numPosts);
 const details = rankDetails()
 
 function percentage(partialValue, totalValue) {
     return (100 * partialValue) / totalValue;
 }
-console.log({numPosts})
-constructProgressBar(numPosts)
+
+constructProgressBar(numPosts);
+
 function constructProgressBar(numPosts) {
     if (numPosts >= details.gold.num) {
         document.getElementById('rank_section').style.display = 'none'
@@ -18,13 +18,11 @@ function constructProgressBar(numPosts) {
     const progressBar = document.querySelector('#rank_progressbar');
     const rankNumber = getRankNumber(numPosts);
     const percentagePosts = percentage(numPosts, rankNumber);
-
-    const numLeftTillNextRank =  (rankNumber+1) - numPosts
-    const message = `only ${numLeftTillNextRank} more to posts to go till you reach ${nextRank()}`
+    const numLeftTillNextRank = (rankNumber + 1) - numPosts
     progressBar.style.background = getRankColour(numPosts);
     progressBar.style.width = `${percentagePosts}%`;
     progressBar.innerText = `${percentagePosts}%`;
-    document.getElementById('message').innerText = message
+    document.getElementById('message').innerText = `only ${numLeftTillNextRank} more to posts to go till you reach ${nextRank()}`
     progressBar.setAttribute('aria-valuenow', percentagePosts);
 }
 
@@ -41,23 +39,15 @@ function getRankColour(numPost = 0) {
 }
 
 function getRankNumber() {
-    if (ranks.bronze.hasQualified(numPosts)) {
-        return ranks.bronze.num;
-    }
-    if (ranks.silver.hasQualified(numPosts)) {
-        return ranks.silver.num;
-    }
+    if (ranks.bronze.hasQualified(numPosts)) return ranks.bronze.num;
+    if (ranks.silver.hasQualified(numPosts)) return ranks.silver.num;
     return ranks.gold.num;
-
 }
 
 
 function nextRank() {
     if (ranks.bronze.hasQualified(numPosts)) {
-        if (ranks.silver.hasQualified(numPosts)) {
-            return 'silver'
-        }
-
+        if (ranks.silver.hasQualified(numPosts)) return 'silver'
     }
     return 'gold'
 

@@ -5,6 +5,8 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from blog.models import Post
+
+
 class RegisterView(CreateView):
     form_class = UserRegisterForm
     template_name = 'users/register.html'
@@ -48,7 +50,6 @@ class Profile(LoginRequiredMixin, CreateView):
         )
         if not context[user_form].is_valid() and context[profile_fom].is_valid():
             messages.error(request, "Whoops, something went wrong.")
-            # return redirect('profile')
             return render(request, self.template_name, context)
 
         context[user_form].save()

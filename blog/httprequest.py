@@ -14,8 +14,5 @@ class HttpRequest:
     def is_http_request(self):
         return self.__is_fetch_request() or self.__is_ajax()
 
-    def get_post_id(self, id):
-        return self.request.POST.get(id) or json.loads(self.request.body.decode('utf-8'))[id]
-
-    def get_id_form_data(self, id):
-        return json.loads(self.request.body.decode('utf-8'))[id]
+    def get_post_id(self, post_id):
+        return self.request.POST.get(post_id) or json.loads(self.request.body.decode('utf-8'))[post_id]
