@@ -36,19 +36,15 @@ profile
                 <div class="float-end">
                     <i class="fa-solid fa-medal fa-2xl" id="rank"></i>
                     <div>
-
                     </div>
                 </div>
-                <!--                <i class="fa-solid fa-heart fa-lg"></i>-->
                 <br>
                 <a class="btn btn-primary text-capitalize" href="#" role="button">my posts</a>
                 <div class="mt-2">
-                    <!--                    2 <span class="badge text-bg-secondary">gaming</span>-->
-                    <!--                    1 <span class="badge text-bg-secondary">Politics</span>-->
-                    <!--                    1 <span class="badge text-bg-secondary">Coding</span>-->
-
+                    {% for tag in post_tags %}
+                    {{ tag.count }} <span class="badge text-bg-secondary">{{ tag.name }}</span><br>
+                    {% endfor %}
                 </div>
-
             </div>
         </div>
     </div>
@@ -57,7 +53,7 @@ profile
 <form method="post" novalidate enctype="multipart/form-data">
     {% csrf_token %}
     <fieldset class="form-group">
-        <legend class="border-bottom mb-4 text-capitalize"> profile info</legend>
+        <legend class="border-bottom mb-4 mt-4 text-capitalize"> profile info</legend>
         {{ user_form|crispy }}
         {{ profile_form|crispy }}
     </fieldset>

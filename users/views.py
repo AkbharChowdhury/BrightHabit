@@ -1,10 +1,12 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Q, Count
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
+from blog.author import Author
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
-from blog.models import Post
+from blog.models import Post, Tag
 from django.db import connection
 
 
@@ -41,17 +43,14 @@ class Profile(LoginRequiredMixin, CreateView):
     def get(self, request, *args, **kwargs):
         user_last_post = Post.objects.filter(author=request.user).order_by('-date_posted')
         num_posts = Post.objects.filter(author=request.user).count()
-
-        # print(self.my_custom_sql(), 'ss')
-
-
+        post_tags = Tag.objects.all().filter(tags__author__email=request.user.email).annotate(count=Count('tags'))
         return render(request, self.template_name, {
             self.user_form: self.get_user_form(request),
             self.profile_form: ProfileUpdateForm(instance=request.user.profile),
             'num_posts': num_posts,
             'last_posted': user_last_post[0] if user_last_post.exists() else '',
             'plural': 's' if num_posts > 1 else '',
-
+            'post_tags': post_tags,
         })
 
     def post(self, request, *args, **kwargs):
