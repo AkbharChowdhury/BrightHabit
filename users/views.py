@@ -5,6 +5,7 @@ from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from blog.models import Post
+from django.db import connection
 
 
 class RegisterView(CreateView):
@@ -26,6 +27,13 @@ class Profile(LoginRequiredMixin, CreateView):
     user_form = 'user_form'
     profile_form = 'profile_form'
 
+    def my_custom_sql(self):
+        with connection.cursor() as cursor:
+            cursor.execute("SELECT * FROM post WHERE author = %s", [str(self.request.user.id)])
+            row = cursor.fetchone()
+
+        return row
+
     def get_user_form(self, request):
         request_method = None if request.method == 'GET' else self.request.POST
         return UserUpdateForm(request_method, instance=request.user, current_user=request.user)
@@ -33,12 +41,17 @@ class Profile(LoginRequiredMixin, CreateView):
     def get(self, request, *args, **kwargs):
         user_last_post = Post.objects.filter(author=request.user).order_by('-date_posted')
         num_posts = Post.objects.filter(author=request.user).count()
+
+        # print(self.my_custom_sql(), 'ss')
+
+
         return render(request, self.template_name, {
             self.user_form: self.get_user_form(request),
             self.profile_form: ProfileUpdateForm(instance=request.user.profile),
             'num_posts': num_posts,
             'last_posted': user_last_post[0] if user_last_post.exists() else '',
-            'plural': 's' if num_posts > 1 else ''
+            'plural': 's' if num_posts > 1 else '',
+
         })
 
     def post(self, request, *args, **kwargs):

@@ -4,6 +4,7 @@ from django.db import models
 from django.utils.safestring import mark_safe
 from django.urls import reverse
 from ckeditor.fields import RichTextField
+from .my_helper import MyHelper
 
 
 class ContactEmail(models.Model):
@@ -42,15 +43,10 @@ class Post(models.Model):
 
     @property
     def get_content(self):
-        return self.__clean_text(self.body)
+        return MyHelper.clean_text(self.body)
 
     @property
     def snippet(self):
         if self.post_snippet:
-            return f'{self.__clean_text(self.post_snippet[:100])}...'
-        return f'{self.__clean_text(self.body[:200])}...'
-
-    def __clean_text(self, text):
-        return mark_safe(text
-                         .removeprefix('<pre>')
-                         .removesuffix('</pre>'))
+            return f'{MyHelper.clean_text(self.post_snippet[:100])}...'
+        return f'{MyHelper.clean_text(self.body[:200])}...'
