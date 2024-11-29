@@ -107,6 +107,7 @@ class PostDetailView(DetailView):
         context['liked'] = liked
         return context
 
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['tag_colour'] = TAG_COLOUR
