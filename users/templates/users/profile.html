@@ -3,7 +3,7 @@
 {% load humanize %}
 {% load static %}
 {% block title %}
-profile
+    profile
 {% endblock %}
 {% block content %}
 <div class="card">
@@ -32,7 +32,6 @@ profile
                 <input type="hidden" value="{{ num_posts }}" id="num_posts">
             </div>
             <div class="col">
-
                 <div class="float-end">
                     <i class="fa-solid fa-medal fa-2xl" id="rank"></i>
                     <div>
@@ -61,8 +60,8 @@ profile
         <button type="submit" class="btn btn-outline-info text-capitalize">update profile</button>
     </div>
 </form>
-
 {% endblock %}
+
 {% block scripts %}
-<script src="{% static 'js/rank.js' %}"></script>
+    <script src="{% static 'js/rank.js' %}"></script>
 {% endblock %}

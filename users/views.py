@@ -29,13 +29,6 @@ class Profile(LoginRequiredMixin, CreateView):
     user_form = 'user_form'
     profile_form = 'profile_form'
 
-    def my_custom_sql(self):
-        with connection.cursor() as cursor:
-            cursor.execute("SELECT * FROM post WHERE author = %s", [str(self.request.user.id)])
-            row = cursor.fetchone()
-
-        return row
-
     def get_user_form(self, request):
         request_method = None if request.method == 'GET' else self.request.POST
         return UserUpdateForm(request_method, instance=request.user, current_user=request.user)

@@ -1,6 +1,6 @@
 {% load humanize %}
 {% for post in posts %}
-    <div class="row g-0  position-relative">
+    <div class="row g-0 position-relative">
         <div class="col-md-6 mb-md-0 p-md-4">
             {% if post.image %}
                 <img
@@ -31,7 +31,6 @@
                         height="25"
                         class="img-fluid rounded">
             <form role="search">
-
                 <span class="text-capitalize">
                     <a type="submit"
                        href="{% url 'blog_user_posts' post.author.username %}?title={{ request.GET.title }}&author={{ post.author.username }}&tags={{ request.GET.tags }}"
@@ -39,15 +38,9 @@
                     </a>
                 </span>
             </form>
-
-
             <div>
                 <a href="{% url 'blog_detail' post.id %}" class="btn btn-primary">View</a>
             </div>
-
-
-            {#                            <a "{% url 'blog_detail' post.id %}" class="stretched-link"></a>#}
-
         </div>
     </div>
     <hr>

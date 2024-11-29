@@ -1,7 +1,6 @@
 from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db import models
-from django.utils.safestring import mark_safe
 from django.urls import reverse
 from ckeditor.fields import RichTextField
 from .my_helper import MyHelper
