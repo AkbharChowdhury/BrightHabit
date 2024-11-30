@@ -7,7 +7,7 @@ from .my_helper import MyHelper
 
 
 class ContactEmail(models.Model):
-    email = models.CharField(max_length=100)
+    email = models.EmailField(max_length=100)
     subject = models.CharField(max_length=200)
     message = models.TextField()
 

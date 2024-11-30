@@ -5,6 +5,7 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from blog.author import Author
+from blog.my_helper import MyHelper
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from blog.models import Post, Tag
 from django.db import connection
@@ -54,7 +55,7 @@ class Profile(LoginRequiredMixin, CreateView):
             profile_form=ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
         )
         if not context[user_form].is_valid() and context[profile_fom].is_valid():
-            messages.error(request, "Whoops, something went wrong.")
+            messages.error(request, MyHelper.error_message())
             return render(request, self.template_name, context)
 
         context[user_form].save()

@@ -10,18 +10,17 @@ from django.views.generic import ListView, DetailView, CreateView, UpdateView, D
 from django.views.generic.base import ContextMixin
 
 from BrightHabit.settings import APP_NAME, ADMIN_EMAIL
-from blog.models import Post, Tag, ContactEmail
+from .models import Post, Tag, ContactEmail
 from .author import Author
 from .forms import ContactEmailForm
 from .httprequest import HttpRequest
 from .my_helper import MyHelper
 from .search_posts import SearchPosts
 
-TAG_COLOUR = 'secondary'
-
 
 class CustomTags(ContextMixin):
     MIN_NUM_TAGS = 3
+    TAG_COLOUR = 'secondary'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -34,6 +33,9 @@ class CustomTags(ContextMixin):
             Q(tags__in=Post.objects.all())).distinct()[:self.MIN_NUM_TAGS]
         context['tags'] = tags
         return context
+
+
+TAG_COLOUR = CustomTags.TAG_COLOUR
 
 
 class PostListView(ListView, CustomTags):
@@ -173,5 +175,5 @@ class ContactView(CreateView):
                          fail_silently=False):
                 messages.success(request, "Your enquiry has been sent!")
                 return redirect(reverse_lazy('blog_contact'))
-        messages.error(request, "Please fill all the fields")
+        messages.error(request, MyHelper.error_message())
         return render(request, self.template_name, {'form': form})

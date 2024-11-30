@@ -9,5 +9,9 @@ class MyHelper(ABC):
         return list(filter(None, lst))
 
     @staticmethod
+    def error_message():
+        return "Whoops, something went wrong."
+
+    @staticmethod
     def clean_text(text):
         return mark_safe(text.removeprefix('<pre>').removesuffix('</pre>'))
