@@ -3,7 +3,7 @@
 {% load humanize %}
 {% load static %}
 {% block title %}
-    profile
+profile
 {% endblock %}
 {% block content %}
 <div class="card">
@@ -38,7 +38,9 @@
                     </div>
                 </div>
                 <br>
-                <a class="btn btn-primary text-capitalize" href="#" role="button">my posts</a>
+                <a class="btn btn-primary text-capitalize"
+                   href="{% url 'blog_user_posts' user.username %}?title="
+                   role="button">my posts</a>
                 <div class="mt-2">
                     {% for tag in post_tags %}
                     {{ tag.count }} <span class="badge text-bg-secondary">{{ tag.name }}</span><br>
@@ -63,5 +65,5 @@
 {% endblock %}
 
 {% block scripts %}
-    <script src="{% static 'js/rank.js' %}"></script>
+<script src="{% static 'js/rank.js' %}"></script>
 {% endblock %}

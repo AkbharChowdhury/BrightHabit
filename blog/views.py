@@ -19,23 +19,29 @@ from .search_posts import SearchPosts
 
 
 class CustomTags(ContextMixin):
-    MIN_NUM_TAGS = 3
-    TAG_COLOUR = 'secondary'
+    def __min_num_tags(self):
+        return 3
+
+    @staticmethod
+    def tag_colour():
+        return 'secondary'
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
+
         if self.kwargs.get('username'):
             author_username = Q(author=Author.get_author_by_username(username=self.kwargs.get('username')))
             context['tags'] = Tag.objects.filter(Q(tags__in=Post.objects.filter(author_username))).distinct()
             return context
+
         tags = Tag.objects.filter(
             Q(tags__in=Post.objects.all())).distinct() if 'show_all_tags' in self.request.GET else Tag.objects.filter(
-            Q(tags__in=Post.objects.all())).distinct()[:self.MIN_NUM_TAGS]
+            Q(tags__in=Post.objects.all())).distinct()[:self.__min_num_tags()]
         context['tags'] = tags
         return context
 
 
-TAG_COLOUR = CustomTags.TAG_COLOUR
+TAG_COLOUR = CustomTags.tag_colour()
 
 
 class PostListView(ListView, CustomTags):
