@@ -17,8 +17,7 @@ class RegisterView(CreateView):
         form = self.form_class(request.POST)
         if form.is_valid():
             form.save()
-            username = form.cleaned_data.get('username')
-            messages.success(request, f'Account created for {username}. you can now login')
+            messages.success(request, f'Account created for {form.cleaned_data.get('username')}. you can now login')
             return redirect(reverse_lazy('login'))
         return render(request, self.template_name, {'form': form})
 
