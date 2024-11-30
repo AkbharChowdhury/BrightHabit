@@ -4,11 +4,9 @@ from django.db.models import Q, Count
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
-from blog.author import Author
 from blog.my_helper import MyHelper
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
 from blog.models import Post, Tag
-from django.db import connection
 
 
 class RegisterView(CreateView):
