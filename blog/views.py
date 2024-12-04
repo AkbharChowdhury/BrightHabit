@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
 from django.db.models import Q
@@ -93,23 +94,24 @@ class PostDetailView(DetailView):
     context_object_name = 'post'
     template_name = 'blog/detail.html'
 
+    def user(self) -> User:
+        return self.request.user
+
     def post(self, request, *args, **kwargs):
         http_request = HttpRequest(self.request)
         if http_request.is_http_request():
-            self.toggle_like(http_request.get_post_id('post_id'))
+            self.toggle_like(http_request.get_post_id('post_id'), self.user())
             return JsonResponse(self.like_data())
 
-    def toggle_like(self, post_id) -> None:
-        post = get_object_or_404(self.model, id=post_id)
-        post.likes.remove(self.request.user) if post.likes.filter(
-            id=self.request.user.id).exists() else post.likes.add(
-            self.request.user)
+    def toggle_like(self, post_id: str, user: User) -> None:
+        post = get_object_or_404(self.model, id=int(post_id))
+        post.likes.remove(user) if post.likes.filter(id=user.id).exists() else post.likes.add(user)
 
     def like_data(self, context=None):
         if context is None:
             context = {}
         post_likes = get_object_or_404(self.model, id=self.kwargs['pk'])
-        liked = False if post_likes.likes.filter(id=self.request.user.id).exists() else True
+        liked = False if post_likes.likes.filter(id=self.user().id).exists() else True
         context['total_likes'] = post_likes.total_likes()
         context['liked_icon'] = 'fa-regular' if liked else 'fa-solid'
         context['liked'] = liked
@@ -119,7 +121,6 @@ class PostDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['tag_colour'] = TAG_COLOUR
         context.update(self.like_data(context=context))
-        self.like_data(context)
         return context
 
 
