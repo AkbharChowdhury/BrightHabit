@@ -28,10 +28,12 @@ class CustomTags(ContextMixin):
         return 'secondary'
 
     def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
 
-        if self.kwargs.get('username'):
-            author_username = Q(author=Author.get_author_by_username(username=self.kwargs.get('username')))
+        context = super().get_context_data(**kwargs)
+        username = self.kwargs.get('username')
+
+        if username:
+            author_username = Q(author=Author.get_author_by_username(username))
             context['tags'] = Tag.objects.filter(Q(tags__in=Post.objects.filter(author_username))).distinct()
             return context
         context['tags'] = self.toggle_tags(show_all_tags='show_all_tags' in self.request.GET)
