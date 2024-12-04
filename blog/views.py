@@ -3,7 +3,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
-from django.db.models import Q
+from django.db.models import Q, QuerySet
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
@@ -34,12 +34,14 @@ class CustomTags(ContextMixin):
             author_username = Q(author=Author.get_author_by_username(username=self.kwargs.get('username')))
             context['tags'] = Tag.objects.filter(Q(tags__in=Post.objects.filter(author_username))).distinct()
             return context
-
-        tags = Tag.objects.filter(
-            Q(tags__in=Post.objects.all())).distinct() if 'show_all_tags' in self.request.GET else Tag.objects.filter(
-            Q(tags__in=Post.objects.all())).distinct()[:self.__min_num_tags()]
-        context['tags'] = tags
+        context['tags'] = self.toggle_tags(show_all_tags='show_all_tags' in self.request.GET)
         return context
+
+    def toggle_tags(self, show_all_tags: bool = False) -> QuerySet[Tag]:
+        tags: QuerySet[Tag] = Tag.objects.filter(Q(tags__in=Post.objects.all())).distinct()
+        if show_all_tags:
+            return tags
+        return tags[:self.__min_num_tags()]
 
 
 TAG_COLOUR = CustomTags.tag_colour()
