@@ -43,7 +43,6 @@ class CustomTags(ContextMixin):
             return tags
         return tags[:self.__min_num_tags()]
 
-
 TAG_COLOUR = CustomTags.tag_colour()
 
 
