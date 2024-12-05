@@ -16,7 +16,21 @@ from .author import Author
 from .forms import ContactEmailForm
 from .httprequest import HttpRequest
 from .my_helper import MyHelper
+from .search_params import SearchParams
 from .search_posts import SearchPosts
+
+
+class Params(ContextMixin):
+    def __init__(self, request):
+        self.request = request
+
+    def get_context_data(self, *args, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['app_name'] = APP_NAME
+        context['selected_tags'] = self.request.GET.getlist('tags')
+        context['tag_colour'] = TAG_COLOUR
+        context['search_params'] = SearchParams(self.request).search_params()
+        return context
 
 
 class CustomTags(ContextMixin):
@@ -45,6 +59,7 @@ class CustomTags(ContextMixin):
             return tags
         return tags[:self.__min_num_tags()]
 
+
 TAG_COLOUR = CustomTags.tag_colour()
 
 
@@ -57,9 +72,7 @@ class PostListView(ListView, CustomTags):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['app_name'] = APP_NAME
-        context['selected_tags'] = self.request.GET.getlist('tags')
-        context['tag_colour'] = TAG_COLOUR
+        context.update(Params(self.request).get_context_data())
         return context
 
     def get_queryset(self):
@@ -86,9 +99,7 @@ class UserPostListView(ListView, CustomTags):
 
     def get_context_data(self, *args, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['app_name'] = APP_NAME
-        context['selected_tags'] = self.request.GET.getlist('tags')
-        context['tag_colour'] = TAG_COLOUR
+        context.update(Params(self.request).get_context_data())
         return context
 
 
@@ -175,13 +186,14 @@ class ContactView(CreateView):
     template_name = 'emails/contact.html'
     form_class = ContactEmailForm
 
+    def get_data(self, param: str):
+        return self.request.POST.get(param)
+
     def post(self, request, *args, **kwargs):
-        subject = request.POST.get('subject')
-        message = request.POST.get('message')
-        email = request.POST.get('email')
         form = self.form_class(request.POST)
         if form.is_valid():
-            if send_mail(subject=subject, message=message, from_email=email, recipient_list=[ADMIN_EMAIL],
+            if send_mail(subject=self.get_data('subject'), message=self.get_data('message'),
+                         from_email=self.get_data('email'), recipient_list=[ADMIN_EMAIL],
                          fail_silently=False):
                 messages.success(request, "Your enquiry has been sent!")
                 return redirect(reverse_lazy('blog_contact'))
