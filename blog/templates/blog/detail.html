@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 {% load humanize %}
 {% load static %}
-{% block title %} {{ post.title }} {% endblock %}
+{% block title %}
+    {{ post.title }}
+{% endblock %}
 
 {% block content %}
 <article>
@@ -19,26 +21,21 @@
             {% endif %}
         </div>
         {% for tag in post.tags.all %}
-        <a class="badge bg-{{ tag_colour }} text-decoration-none">{{ tag }}</a>
+            <a class="badge bg-{{ tag_colour }} text-decoration-none">{{ tag }}</a>
         {% endfor %}
 
         <section class="post_likes">
 
-            <form method="post" id="like_toggle_form">
+            <form method="post" id="toggleLikeForm">
                 {% csrf_token %}
                 <input type="hidden" id="url" value="{% url 'blog_detail' post.pk %}">
                 <input type="hidden" id="post_id" name="post_id" value="{{ post.id }}">
                 {% if user.is_authenticated %}
-                <button name="btn_toggle_like"
-                        id="btn_toggle_like"
-                        class="remove_button_style"
-                        type="submit"
-                        value="{{ post.id }}">
+                <button id="btn_toggle_like" class="remove_button_style" type="submit" value="{{ post.id }}">
                     <i class="{{ liked_icon }} fa-heart fa-lg" id="like_icon" aria-hidden="true" type="submit"></i>
                 </button>
-
                 {% else %}
-                <small class="text-muted">Please login to like </small>
+                    <small class="text-muted">Please login to like</small>
                 {% endif %}
                 <span id="total_likes">{{ total_likes }}</span>
             </form>
@@ -50,9 +47,9 @@
         <div class="ratio ratio-4x3">
             <img class="img-fluid rounded"
                  {% if post.image %}
-                 src="{{ post.image.url }}"
+                     src="{{ post.image.url }}"
                  {% endif %}
-                 alt="article image"/>
+                 alt="article image">
         </div>
 
     </figure>
@@ -74,7 +71,7 @@
                     <h5 class="card-title">{{ post.author.username }}</h5>
                     <p>Name: {{ post.author.profile.full_name }} </p>
                     {% if post.author.profile.bio %}
-                    <p class="card-text">{{ post.author.profile.bio }}<</p>
+                        <p class="card-text">{{ post.author.profile.bio }}<</p>
                     {% endif %}
                 </div>
             </div>
@@ -83,5 +80,5 @@
 </section>
 {% endblock %}
 {% block scripts %}
-<script src="{% static 'js/toggleLike.js' %}"></script>
+    <script src="{% static 'js/toggleLike.js' %}"></script>
 {% endblock %}

@@ -1,5 +1,5 @@
 window.onload = () => {
-    document.querySelector('#like_toggle_form').addEventListener('submit', (e) => {
+    document.querySelector('#toggleLikeForm').addEventListener('submit', (e) => {
         e.preventDefault();
         toggleLike().then(data => {
             document.querySelector('#total_likes').textContent = data['total_likes']

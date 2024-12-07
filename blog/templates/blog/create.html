@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% load crispy_forms_tags %}
-{% block title %}add post{% endblock %}
+{% block title %}
+    add post
+{% endblock %}
 {% block content %}
     <form method="post" novalidate enctype="multipart/form-data">
         {% csrf_token %}

@@ -1,13 +1,15 @@
 {% extends 'base.html' %}
 {% load humanize %}
 
-{% block title %} Welcome {% endblock %}
+{% block title %}
+    {{ username }} posts
+{% endblock %}
 
 {% block tags %}
         {% include 'partials/tags.html' with tags=tags selected_tags=selected_tags %}
 {% endblock %}
 {% block content %}
-    <h1 class="mb-3">Posts by {{ view.kwargs.username }} ({{ page_obj.paginator.count }})</h1>
+    <h1 class="mb-3">Posts by <span class="text-capitalize">{{ username }}</span> ({{ page_obj.paginator.count }})</h1>
     {% include 'blog/partials/posts.html' with posts=posts tag_colour=tag_colour %}
     {% include 'blog/partials/pagination.html' with search_params=search_params %}
 {% endblock %}

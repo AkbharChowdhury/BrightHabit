@@ -42,9 +42,9 @@ class CustomTags(ContextMixin):
         return 'secondary'
 
     def get_context_data(self, *args, **kwargs):
-
         context = super().get_context_data(**kwargs)
         username = self.kwargs.get('username')
+        context['username'] = username
 
         if username:
             author_username = Q(author=Author.get_author_by_username(username))
