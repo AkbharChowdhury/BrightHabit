@@ -1,12 +1,7 @@
 {% for tag in tags %}
-<input type="checkbox"
-       class="btn-check"
-       id="{{ tag }}"
-       name="tags"
-       value="{{ tag }}"
-       {% for selected_tag in selected_tags %}
-           {% if tag.name == selected_tag %} checked {% endif %}
-       {% endfor %}
->
-<label class="btn btn-outline-primary" for="{{ tag }}">{{ tag }}</label>
+    <input type="checkbox" class="btn-check" id="{{ tag }}" name="tags" value="{{ tag }}"
+            {% for selected_tag in selected_tags %}
+                {% if tag.name == selected_tag %} checked {% endif %}
+            {% endfor %}>
+    <label class="btn btn-outline-primary" for="{{ tag }}">{{ tag }}</label>
 {% endfor %}
