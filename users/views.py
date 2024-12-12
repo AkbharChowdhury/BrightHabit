@@ -13,12 +13,15 @@ class RegisterView(CreateView):
     form_class = UserRegisterForm
     template_name = 'users/register.html'
 
+    def get_success_url(self):
+        return redirect(reverse_lazy('login'))
+
     def post(self, request, *args, **kwargs):
         form = self.form_class(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, f'Account created for {form.cleaned_data.get('username')}. you can now login')
-            return redirect(reverse_lazy('login'))
+            return self.get_success_url()
         return render(request, self.template_name, {'form': form})
 
 
@@ -51,6 +54,7 @@ class Profile(LoginRequiredMixin, CreateView):
             user_form=self.get_user_form(request),
             profile_form=ProfileUpdateForm(request.POST, request.FILES, instance=request.user.profile)
         )
+
         if not context[user_form].is_valid() and context[profile_fom].is_valid():
             messages.error(request, MyHelper.error_message())
             return render(request, self.template_name, context)

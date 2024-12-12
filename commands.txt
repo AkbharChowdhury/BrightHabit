@@ -41,7 +41,7 @@ Article.objects.all()
 article = Article()
 article.title = 'test title'
 
-python manage.py createsuperuser
+python3 manage.py createsuperuser
 
 admin
 test1234--

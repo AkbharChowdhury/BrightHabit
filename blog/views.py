@@ -33,7 +33,7 @@ class Params(ContextMixin):
         return context
 
 
-class CustomTags(ContextMixin):
+class CustomTagsMixin(ContextMixin):
     def __min_num_tags(self):
         return 3
 
@@ -60,10 +60,10 @@ class CustomTags(ContextMixin):
         return tags[:self.__min_num_tags()]
 
 
-TAG_COLOUR = CustomTags.tag_colour()
+TAG_COLOUR = CustomTagsMixin.tag_colour()
 
 
-class PostListView(ListView, CustomTags):
+class PostListView(ListView, CustomTagsMixin):
     model = Post
     template_name = 'blog/index.html'
     context_object_name = 'posts'
@@ -82,7 +82,7 @@ class PostListView(ListView, CustomTags):
         return self.model.objects.all().order_by(self.ordering)
 
 
-class UserPostListView(ListView, CustomTags):
+class UserPostListView(ListView, CustomTagsMixin):
     model = Post
     template_name = 'blog/user_posts.html'
     context_object_name = 'posts'
@@ -150,7 +150,13 @@ class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
         return super().form_valid(form)
 
 
-class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
+class PostBelongsToUserMixin(LoginRequiredMixin, UserPassesTestMixin):
+    def test_func(self):
+        post = self.get_object()
+        return self.request.user == post.author
+
+
+class PostUpdateView(PostBelongsToUserMixin, UpdateView):
     model = Post
     context_object_name = 'post'
     template_name = 'blog/update.html'
@@ -165,16 +171,12 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
         return self.request.user == post.author
 
 
-class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
+class PostDeleteView(PostBelongsToUserMixin, DeleteView):
     model = Post
     context_object_name = 'post'
     template_name = 'blog/delete.html'
     success_url = '/'
     success_message = f'blog deleted'.title()
-
-    def test_func(self):
-        post = self.get_object()
-        return self.request.user == post.author
 
 
 def about(request):
