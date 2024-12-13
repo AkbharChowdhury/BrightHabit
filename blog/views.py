@@ -20,6 +20,8 @@ from .search_params import SearchParams
 from .search_posts import SearchPosts
 
 from .forms import PostForm
+
+
 class Params(ContextMixin):
     def __init__(self, request):
         self.request = request
@@ -161,7 +163,6 @@ class PostUpdateView(PostBelongsToUserMixin, UpdateView):
     context_object_name = 'post'
     template_name = 'blog/update.html'
     form_class = PostForm
-    # fields = ('title', 'body', 'image', 'tags', 'post_snippet')
 
     def form_valid(self, form):
         form.instance.author = self.request.user

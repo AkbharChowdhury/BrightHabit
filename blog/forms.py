@@ -10,6 +10,7 @@ class ContactEmailForm(forms.ModelForm):
 
 class PostForm(forms.ModelForm):
     tags = forms.ModelMultipleChoiceField(widget=forms.CheckboxSelectMultiple(), queryset=Tag.objects.all())
+
     class Meta:
         model = Post
         fields = ('title', 'body', 'image', 'tags', 'post_snippet')
