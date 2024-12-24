@@ -3,64 +3,22 @@ from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
 from django.core.mail import send_mail
-from django.db.models import Q, QuerySet
+from django.db.models import Q
 from django.http import JsonResponse
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from django.views.generic.base import ContextMixin
 
-from BrightHabit.settings import APP_NAME, ADMIN_EMAIL
-from .models import Post, Tag, ContactEmail
+from BrightHabit.settings import ADMIN_EMAIL
 from .author import Author
+from .custom_tags import CustomTagsMixin
 from .forms import ContactEmailForm
-from .httprequest import HttpRequest
-from .my_helper import MyHelper
-from .search_params import SearchParams
-from .search_posts import SearchPosts
-
 from .forms import PostForm
-
-
-class Params(ContextMixin):
-    def __init__(self, request):
-        self.request = request
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['app_name'] = APP_NAME
-        context['selected_tags'] = self.request.GET.getlist('tags')
-        context['tag_colour'] = TAG_COLOUR
-        context['search_params'] = SearchParams(self.request).search_params()
-        return context
-
-
-class CustomTagsMixin(ContextMixin):
-    def __min_num_tags(self):
-        return 3
-
-    @staticmethod
-    def tag_colour():
-        return 'secondary'
-
-    def get_context_data(self, *args, **kwargs):
-        context = super().get_context_data(**kwargs)
-        username = self.kwargs.get('username')
-        context['username'] = username
-
-        if username:
-            author_username = Q(author=Author.get_author_by_username(username))
-            context['tags'] = Tag.objects.filter(Q(tags__in=Post.objects.filter(author_username))).distinct()
-            return context
-        context['tags'] = self.toggle_tags(show_all_tags='show_all_tags' in self.request.GET)
-        return context
-
-    def toggle_tags(self, show_all_tags: bool = False) -> QuerySet[Tag]:
-        tags: QuerySet[Tag] = Tag.objects.filter(Q(tags__in=Post.objects.all())).distinct()
-        if show_all_tags:
-            return tags
-        return tags[:self.__min_num_tags()]
-
+from .http_request import HttpRequest
+from .models import Post, ContactEmail
+from .my_helper import MyHelper
+from .params import Params
+from .search_posts import SearchPosts
 
 TAG_COLOUR = CustomTagsMixin.tag_colour()
 
@@ -116,7 +74,7 @@ class PostDetailView(DetailView):
     def post(self, request, *args, **kwargs):
         http_request = HttpRequest(self.request)
         if http_request.is_http_request():
-            self.toggle_like(http_request.get_post_id('post_id'), self.user())
+            self.toggle_like(post_id=http_request.get_post_id('post_id'), user=self.user())
             return JsonResponse(self.like_data())
 
     def toggle_like(self, post_id: str, user: User) -> None:
@@ -167,10 +125,6 @@ class PostUpdateView(PostBelongsToUserMixin, UpdateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
-
-    def test_func(self):
-        post = self.get_object()
-        return self.request.user == post.author
 
 
 class PostDeleteView(PostBelongsToUserMixin, DeleteView):
