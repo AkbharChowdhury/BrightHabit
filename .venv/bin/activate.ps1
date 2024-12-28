@@ -1,4 +1,4 @@
-﻿$script:THIS_PATH = $myinvocation.mycommand.path
+$script:THIS_PATH = $myinvocation.mycommand.path
 $script:BASE_DIR = Split-Path (Resolve-Path "$THIS_PATH/..") -Parent
 
 function global:deactivate([switch] $NonDestructive) {
@@ -37,8 +37,8 @@ deactivate -nondestructive
 $VIRTUAL_ENV = $BASE_DIR
 $env:VIRTUAL_ENV = $VIRTUAL_ENV
 
-if ('BrightHabit' -ne "") {
-    $env:VIRTUAL_ENV_PROMPT = 'BrightHabit'
+if ("" -ne "") {
+    $env:VIRTUAL_ENV_PROMPT = ""
 }
 else {
     $env:VIRTUAL_ENV_PROMPT = $( Split-Path $env:VIRTUAL_ENV -Leaf )
@@ -46,7 +46,7 @@ else {
 
 New-Variable -Scope global -Name _OLD_VIRTUAL_PATH -Value $env:PATH
 
-$env:PATH = "$env:VIRTUAL_ENV/" + 'bin' + ':' + $env:PATH
+$env:PATH = "$env:VIRTUAL_ENV/bin:" + $env:PATH
 if (!$env:VIRTUAL_ENV_DISABLE_PROMPT) {
     function global:_old_virtual_prompt {
         ""

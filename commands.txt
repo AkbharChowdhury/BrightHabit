@@ -18,13 +18,15 @@ pip install decouple
 cd blog
 
 python3 manage.py runserver
+pip3 uninstall decouple
+pip3 install python-decouple
 
 create an app
 python manage.py startapp myapp
 
 migration
-python3 manage.py makemigrations
-python3 manage.py migrate
+python manage.py makemigrations
+python manage.py migrate
 
 shell
 python manage.py dbshell

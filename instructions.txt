@@ -1,7 +1,9 @@
-pip install django
-pip install --upgrade pip
-pip install django-crispy-forms
-pip install crispy-bootstrap5
-pip install django-ckeditor
-pip install Pillow
-pip install decouple
+pip3 install django
+pip3 install --upgrade pip
+pip3 install django-crispy-forms
+pip3 install crispy-bootstrap5
+pip3 install django-ckeditor
+pip3 install Pillow
+pip3 install decouple
+
+pip3 install python-decouple
