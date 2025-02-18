@@ -1,14 +1,17 @@
 import os
 from pathlib import Path
+
+import decouple
 # from decouple import config
 from decouple import config
+
 
 
 # pip3 install decouple
 BASE_DIR = Path(__file__).resolve().parent.parent
 APP_NAME = "BrightHabit"
-SECRET_KEY = config('SECRET_KEY', default="key not found")
-DEBUG = config('DEBUG', default=True, cast=bool)
+SECRET_KEY = decouple.config('SECRET_KEY', default="key not found")
+DEBUG = decouple.config('DEBUG', default=True, cast=bool)
 ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -109,8 +112,8 @@ LOGIN_URL = 'login'
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = config('EMAIL_HOST')
-EMAIL_HOST_USER = config('EMAIL_HOST_USER')
-EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
-EMAIL_PORT = config('EMAIL_PORT', cast=int)
+EMAIL_HOST = config('EMAIL_HOST','')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER','')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD','')
+EMAIL_PORT = config('EMAIL_PORT', cast=int, default=2)
 ADMIN_EMAIL = config('ADMIN_EMAIL', "s")
