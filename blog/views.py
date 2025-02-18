@@ -81,7 +81,7 @@ class PostDetailView(DetailView):
         post = get_object_or_404(self.model, id=int(post_id))
         post.likes.remove(user) if post.likes.filter(id=user.id).exists() else post.likes.add(user)
 
-    def like_data(self, context=None):
+    def like_data(self, context: dict[str, str | int] = None):
         if context is None:
             context = {}
         post_likes = get_object_or_404(self.model, id=self.kwargs['pk'])
