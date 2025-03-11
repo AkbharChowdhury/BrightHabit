@@ -7,9 +7,6 @@ class CustomValidation(ABC):
     @staticmethod
     def email_exists(email: str, excluded_email: str = None) -> bool:
         return User.objects.filter(email=email).exclude(email=excluded_email if excluded_email else '').exists()
-        # if excluded_email:
-        #     return User.objects.filter(email=email).exclude(email=excluded_email).exists()
-        # return User.objects.filter(email=email).exists()
 
     @staticmethod
     def email_exists_error_message() -> str:
