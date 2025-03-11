@@ -41,7 +41,7 @@ class UserUpdateForm(forms.ModelForm):
 
     def clean_email(self):
         email = self.cleaned_data.get('email')
-        if CustomValidation.email_exists_with_exclusion(email=email, excluded_email=self.current_user.email):
+        if CustomValidation.email_exists(email=email, excluded_email=self.current_user.email):
             raise ValidationError(CustomValidation.email_exists_error_message())
         return email
 

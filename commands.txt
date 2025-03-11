@@ -45,6 +45,8 @@ article.title = 'test title'
 
 python3 manage.py createsuperuser
 
+python3 manage.py runserver
+
 admin
 test1234--
 johndoe1

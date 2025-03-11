@@ -5,12 +5,11 @@ from django.contrib.auth.models import User
 
 class CustomValidation(ABC):
     @staticmethod
-    def email_exists(email: str) -> bool:
-        return User.objects.filter(email=email).exists()
-
-    @staticmethod
-    def email_exists_with_exclusion(email: str, excluded_email: str):
-        return User.objects.filter(email=email).exclude(email=excluded_email).exists()
+    def email_exists(email: str, excluded_email: str = None) -> bool:
+        return User.objects.filter(email=email).exclude(email=excluded_email if excluded_email else '').exists()
+        # if excluded_email:
+        #     return User.objects.filter(email=email).exclude(email=excluded_email).exists()
+        # return User.objects.filter(email=email).exists()
 
     @staticmethod
     def email_exists_error_message() -> str:
