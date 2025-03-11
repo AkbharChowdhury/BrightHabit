@@ -94,6 +94,7 @@ class PostDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['tag_colour'] = TAG_COLOUR
+        context['default_profile_pic'] = 'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'
         context.update(self.like_data(context=context))
         return context
 
