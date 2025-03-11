@@ -1,12 +1,14 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Q, Count
+from django.contrib.auth.models import User
+from django.db.models import Count
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
+
+from blog.models import Post, Tag
 from blog.my_helper import MyHelper
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
-from blog.models import Post, Tag
 
 
 class RegisterView(CreateView):
@@ -35,12 +37,14 @@ class Profile(LoginRequiredMixin, CreateView):
         return UserUpdateForm(request_method, instance=request.user, current_user=request.user)
 
     def get(self, request, *args, **kwargs):
-        user_last_post = Post.objects.filter(author=request.user).order_by('-date_posted')
-        num_posts = Post.objects.filter(author=request.user).count()
-        post_tags = Tag.objects.all().filter(tags__author__email=request.user.email).annotate(count=Count('tags'))
+        user: User = request.user
+
+        user_last_post = Post.objects.filter(author=user).order_by('-date_posted')
+        num_posts = Post.objects.filter(author=user).count()
+        post_tags = Tag.objects.all().filter(tags__author__email=user.email).annotate(count=Count('tags'))
         return render(request, self.template_name, {
             self.user_form: self.get_user_form(request),
-            self.profile_form: ProfileUpdateForm(instance=request.user.profile),
+            self.profile_form: ProfileUpdateForm(instance=user.profile),
             'num_posts': num_posts,
             'last_posted': user_last_post[0] if user_last_post.exists() else '',
             'plural': 's' if num_posts > 1 else '',
