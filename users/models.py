@@ -3,8 +3,7 @@ from ckeditor.fields import RichTextField
 from django.core.files.storage import default_storage
 from django.db import models
 from django.contrib.auth.models import User
-
-from PIL import Image
+import PIL
 
 
 class Profile(models.Model):
@@ -22,7 +21,7 @@ class Profile(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if default_storage.exists(f'profile_pics/{self.image}'):
-            with Image.open(self.image) as image:
+            with PIL.Image.open(fp=self.image.path) as image:
                 if image.height > 300 or image.width > 300:
                     output_size = (300, 300)
                     image.thumbnail(output_size)

@@ -2,7 +2,6 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
-from django.core.files.storage import default_storage
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import JsonResponse

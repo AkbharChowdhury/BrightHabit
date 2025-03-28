@@ -17,7 +17,10 @@ My profile
                 <small id="message"></small>
             </div>
             <div class="col-md-4">
-                <img src="{{ user_profile_image }}"
+                <h5>{{  user_profile_image }}</h5>
+                <h5>{{user.profile.image.url }}</h5>
+
+                <img src="{{user.profile.image.url }}"
                      class="img-fluid rounded-circle ratio ratio-1x1 overflow-hidden card-img-top"
                      style="object-fit: cover" width="100" height="100"
                      alt="{{ user.username }} profile">
