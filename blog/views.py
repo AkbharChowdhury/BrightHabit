@@ -2,6 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.contrib.auth.models import User
 from django.contrib.messages.views import SuccessMessageMixin
+from django.core.files.storage import default_storage
 from django.core.mail import send_mail
 from django.db.models import Q
 from django.http import JsonResponse
@@ -10,6 +11,7 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from BrightHabit.settings import ADMIN_EMAIL
+from filehandler import FileHandler
 from .author import Author
 from .custom_tags import CustomTagsMixin
 from .forms import ContactEmailForm
@@ -78,23 +80,32 @@ class PostDetailView(DetailView):
             return JsonResponse(self.like_data())
 
     def toggle_like(self, post_id: str, user: User) -> None:
-        post = get_object_or_404(self.model, id=int(post_id))
+        # post = get_object_or_404(self.model, id=int(post_id))
+        post = self.get_user_post(int(post_id))
+
         post.likes.remove(user) if post.likes.filter(id=user.id).exists() else post.likes.add(user)
 
     def like_data(self, context: dict[str, str | int] = None):
         if context is None:
             context = {}
-        post_likes = get_object_or_404(self.model, id=self.kwargs['pk'])
+        post_likes = self.get_user_post()
         liked = False if post_likes.likes.filter(id=self.user().id).exists() else True
         context['total_likes'] = post_likes.total_likes()
         context['liked_icon'] = 'fa-regular' if liked else 'fa-solid'
         context['liked'] = liked
         return context
 
+    def get_user_post(self, user_id: int = None) -> Post:
+        user_post: Post = get_object_or_404(self.model, id=user_id if user_id else self.kwargs['pk'])
+        return user_post
+
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        user_post: Post = self.get_user_post()
+        author_image = user_post.get_author_image()
+        context['profile_image_exists'] = FileHandler.profile_image_exists(author_image)
+        context['default_profile_pic'] = FileHandler.default_profile_image()
         context['tag_colour'] = TAG_COLOUR
-        context['default_profile_pic'] = 'https://static.vecteezy.com/system/resources/thumbnails/009/292/244/small/default-avatar-icon-of-social-media-user-vector.jpg'
         context.update(self.like_data(context=context))
         return context
 

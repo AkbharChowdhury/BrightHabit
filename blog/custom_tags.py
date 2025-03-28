@@ -25,6 +25,8 @@ class CustomTagsMixin(ContextMixin):
         return context
 
     def __toggle_tags(self, show_all_tags: bool = False) -> QuerySet[Tag]:
-        tags: QuerySet[Tag] = Tag.objects.filter(Q(tags__in=Post.objects.all())).distinct()
-        return tags if show_all_tags else tags[:self.__min_num_tags()]
+        all_tags: QuerySet[Tag] = Tag.objects.filter(Q(tags__in=Post.objects.all())).distinct()
+        return  all_tags if show_all_tags else self.__show_min_tags(tags=all_tags)
 
+    def __show_min_tags(self, tags: QuerySet[Tag]):
+        return tags[:self.__min_num_tags()]

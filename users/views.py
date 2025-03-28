@@ -6,10 +6,11 @@ from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 
+import users.models
 from blog.models import Post, Tag
 from blog.my_helper import MyHelper
+from filehandler import FileHandler
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
-
 
 class RegisterView(CreateView):
     form_class = UserRegisterForm
@@ -38,10 +39,11 @@ class Profile(LoginRequiredMixin, CreateView):
 
     def get(self, request, *args, **kwargs):
         user: User = request.user
-
+        user_profile = users.models.Profile()
         user_last_post = Post.objects.filter(author=user).order_by('-date_posted')
         num_posts = Post.objects.filter(author=user).count()
         post_tags = Tag.objects.all().filter(tags__author__email=user.email).annotate(count=Count('tags'))
+        user_profile_image = user_profile.image if FileHandler.profile_image_exists(user_profile.image) else FileHandler.default_profile_image()
         return render(request, self.template_name, {
             self.user_form: self.get_user_form(request),
             self.profile_form: ProfileUpdateForm(instance=user.profile),
@@ -49,6 +51,7 @@ class Profile(LoginRequiredMixin, CreateView):
             'last_posted': user_last_post[0] if user_last_post.exists() else '',
             'plural': 's' if num_posts > 1 else '',
             'post_tags': post_tags,
+            'user_profile_image': user_profile_image
         })
 
     def post(self, request, *args, **kwargs):

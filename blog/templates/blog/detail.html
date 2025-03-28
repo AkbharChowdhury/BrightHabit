@@ -64,7 +64,7 @@
     <div class="card mb-3" style="max-width: 540px;">
         <div class="row g-0">
             <div class="col-md-4">
-                  {% if post.author.profile.image.url %}
+                  {% if profile_image_exists %}
                     <img src="{{ post.author.profile.image.url }}" class="img-fluid rounded-start" alt="{{post.author.first_name}}'s profile image">
                 {% else %}
                     <img src="{{ default_profile_pic }}" alt="No profile picture to show">

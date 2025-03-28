@@ -3,6 +3,8 @@ from django.utils import timezone
 from django.db import models
 from django.urls import reverse
 from ckeditor.fields import RichTextField
+
+import users.models
 from .my_helper import MyHelper
 
 
@@ -39,6 +41,9 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('blog_detail', kwargs={'pk': self.pk})
+
+    def get_author_image(self) -> str | None:
+        return users.models.Profile().image
 
     @property
     def get_content(self):
