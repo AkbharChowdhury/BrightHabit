@@ -10,8 +10,8 @@ from django.views.generic import CreateView
 import users.models
 from blog.models import Post, Tag
 from blog.my_helper import MyHelper
-from filehandler import FileHandler
 from .forms import UserRegisterForm, UserUpdateForm, ProfileUpdateForm
+
 
 class RegisterView(CreateView):
     form_class = UserRegisterForm
@@ -53,7 +53,6 @@ class Profile(LoginRequiredMixin, CreateView):
             'plural': 's' if num_posts > 1 else '',
             'post_tags': post_tags,
             'user_profile_image': user_profile_image if default_storage.exists(f'profile_pics/{user_profile_image}') else 'empty'
-            # 'user_profile_image': user_profile_image if FileHandler.profile_image_exists(user_profile_image) else FileHandler.default_profile_image()
         })
 
     def post(self, request, *args, **kwargs):

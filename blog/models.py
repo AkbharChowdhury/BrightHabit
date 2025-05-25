@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from django.utils import timezone
 from django.db import models
 from django.urls import reverse
@@ -6,6 +5,7 @@ from ckeditor.fields import RichTextField
 
 import users.models
 from .my_helper import MyHelper
+from django.conf import settings
 
 
 class ContactEmail(models.Model):
@@ -27,11 +27,11 @@ class Post(models.Model):
     body = RichTextField()
     post_snippet = models.CharField(max_length=100, blank=True, null=True)
     date_posted = models.DateTimeField(default=timezone.now)
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     image = models.ImageField(null=True, blank=True, upload_to='images/')
     tags = models.ManyToManyField(Tag, blank=True, related_name='tags')
     search_fields = ('title', 'body', 'author')
-    likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
+    likes = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='post_likes', blank=True)
 
     def total_likes(self):
         return self.likes.count()
